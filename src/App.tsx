@@ -215,229 +215,229 @@ function App() {
 
   return (
     <>
-      <main className="shell">
-        <section className="hero-panel">
-          <div className="hero-copy">
-            <p className="eyebrow">Recovered archive</p>
+      <main className="shell app-shell">
+        <header className="app-topbar">
+          <div className="app-topbar__brand">
+            <p className="eyebrow">Artifact directory</p>
             <h1>Destiny 2 Artifact Codex</h1>
             <p className="subtitle">
-              Browse recovered seasonal artifact grids, inspect each perk in an in-game-inspired view,
-              and trace every artifact back to its source page.
+              Recovered seasonal grids with in-game-style inspection, sourced links, and local icon assets.
             </p>
-            <div className="hero-metrics" aria-label="Catalog summary">
-              <div>
-                <span>{ARTIFACTS.length}</span>
-                <small>Artifacts tracked</small>
-              </div>
-              <div>
-                <span>{completeArtifacts}</span>
-                <small>Recovered grids</small>
-              </div>
-              <div>
-                <span>{ARTIFACTS.filter((artifact) => artifact.confidence === 'high').length}</span>
-                <small>High confidence</small>
-              </div>
-            </div>
-          </div>
-          <div className="hero-diagram" aria-hidden="true">
-            <div className="orb-ring orb-ring-a" />
-            <div className="orb-ring orb-ring-b" />
-            <div className="orb-core" />
-            <div className="sigil sigil-solar" />
-            <div className="sigil sigil-arc" />
-            <div className="sigil sigil-void" />
-            <div className="sigil sigil-stasis" />
-            <div className="sigil sigil-strand" />
-            <div className="sigil sigil-prismatic" />
-          </div>
-        </section>
-
-        <section className="controls-panel" aria-label="Search and filter artifacts">
-          <div className="search-field">
-            <label htmlFor="artifact-search">Search</label>
-            <input
-              id="artifact-search"
-              type="search"
-              placeholder="Search artifacts, mods, perks, weapons, or elements"
-              value={query}
-              onChange={(event) => {
-                const nextValue = event.target.value
-                startTransition(() => setQuery(nextValue))
-              }}
-            />
           </div>
 
-          <div className="filter-grid">
-            <FilterSelect
-              id="season-filter"
-              label="Season / Episode"
-              value={filters.seasonId}
-              onChange={(value) => setFilters((current) => ({ ...current, seasonId: value }))}
-              options={[
-                { value: 'all', label: 'All seasons / episodes' },
-                ...seasonOptions.map((option) => ({ value: option.id, label: option.label })),
-              ]}
-            />
-            <FilterSelect
-              id="era-filter"
-              label="Year / expansion era"
-              value={filters.era}
-              onChange={(value) => setFilters((current) => ({ ...current, era: value }))}
-              options={[
-                { value: 'all', label: 'All eras' },
-                ...eraOptions.map((era) => ({ value: era, label: era })),
-              ]}
-            />
-            <FilterSelect
-              id="element-filter"
-              label="Element focus"
-              value={filters.element}
-              onChange={(value) =>
-                setFilters((current) => ({
-                  ...current,
-                  element: value as ElementTag | 'all',
-                }))
-              }
-              options={[
-                { value: 'all', label: 'Any element focus' },
-                ...ELEMENT_TAGS.map((element) => ({ value: element, label: element })),
-              ]}
-            />
-            <FilterSelect
-              id="weapon-filter"
-              label="Weapon focus"
-              value={filters.weapon}
-              onChange={(value) =>
-                setFilters((current) => ({
-                  ...current,
-                  weapon: value as WeaponTag | 'all',
-                }))
-              }
-              options={[
-                { value: 'all', label: 'Any weapon focus' },
-                ...WEAPON_TAGS.map((weapon) => ({ value: weapon, label: weapon })),
-              ]}
-            />
-            <FilterSelect
-              id="champion-filter"
-              label="Champion focus"
-              value={filters.champion}
-              onChange={(value) =>
-                setFilters((current) => ({
-                  ...current,
-                  champion: value as ChampionTag | 'all',
-                }))
-              }
-              options={[
-                { value: 'all', label: 'Any champion focus' },
-                ...CHAMPION_TAGS.map((champion) => ({
-                  value: champion,
-                  label: champion,
-                })),
-              ]}
-            />
-            <FilterSelect
-              id="sort-filter"
-              label="Sort"
-              value={sortMode}
-              onChange={(value) => setSortMode(value as SortMode)}
-              options={[
-                { value: 'newest', label: 'Newest first' },
-                { value: 'oldest', label: 'Oldest first' },
-                { value: 'artifact-az', label: 'Alphabetical by artifact' },
-                { value: 'season-az', label: 'Alphabetical by season' },
-              ]}
-            />
-          </div>
-        </section>
-
-        <section className="results-panel" aria-live="polite">
-          <div className="results-header">
+          <div className="app-topbar__stats" aria-label="Catalog summary">
             <div>
-              <p className="section-label">Catalog</p>
-              <h2>{filteredArtifacts.length} matching artifacts</h2>
+              <span>{ARTIFACTS.length}</span>
+              <small>Artifacts</small>
             </div>
-            <p className="section-note">
-              Grid focus tags are now recovered from sourced perk lists instead of placeholder unknown values.
-            </p>
+            <div>
+              <span>{completeArtifacts}</span>
+              <small>Recovered grids</small>
+            </div>
+            <div>
+              <span>{ARTIFACTS.filter((artifact) => artifact.confidence === 'high').length}</span>
+              <small>High confidence</small>
+            </div>
           </div>
+        </header>
 
-          {filteredArtifacts.length === 0 ? (
-            <div className="empty-state">
-              <h3>No artifacts matched this filter set.</h3>
-              <p>Reset one or more filters, or search by a broader season, weapon, or element tag.</p>
+        <div className="app-layout">
+          <aside className="filters-sidebar">
+            <section className="controls-panel" aria-label="Search and filter artifacts">
+              <div className="search-field">
+                <label htmlFor="artifact-search">Search</label>
+                <input
+                  id="artifact-search"
+                  type="search"
+                  placeholder="Search artifacts, mods, perks, weapons, or elements"
+                  value={query}
+                  onChange={(event) => {
+                    const nextValue = event.target.value
+                    startTransition(() => setQuery(nextValue))
+                  }}
+                />
+              </div>
+
+              <div className="filter-grid filter-grid--stacked">
+                <FilterSelect
+                  id="season-filter"
+                  label="Season / Episode"
+                  value={filters.seasonId}
+                  onChange={(value) => setFilters((current) => ({ ...current, seasonId: value }))}
+                  options={[
+                    { value: 'all', label: 'All seasons / episodes' },
+                    ...seasonOptions.map((option) => ({ value: option.id, label: option.label })),
+                  ]}
+                />
+                <FilterSelect
+                  id="era-filter"
+                  label="Year / expansion era"
+                  value={filters.era}
+                  onChange={(value) => setFilters((current) => ({ ...current, era: value }))}
+                  options={[
+                    { value: 'all', label: 'All eras' },
+                    ...eraOptions.map((era) => ({ value: era, label: era })),
+                  ]}
+                />
+                <FilterSelect
+                  id="element-filter"
+                  label="Element focus"
+                  value={filters.element}
+                  onChange={(value) =>
+                    setFilters((current) => ({
+                      ...current,
+                      element: value as ElementTag | 'all',
+                    }))
+                  }
+                  options={[
+                    { value: 'all', label: 'Any element focus' },
+                    ...ELEMENT_TAGS.map((element) => ({ value: element, label: element })),
+                  ]}
+                />
+                <FilterSelect
+                  id="weapon-filter"
+                  label="Weapon focus"
+                  value={filters.weapon}
+                  onChange={(value) =>
+                    setFilters((current) => ({
+                      ...current,
+                      weapon: value as WeaponTag | 'all',
+                    }))
+                  }
+                  options={[
+                    { value: 'all', label: 'Any weapon focus' },
+                    ...WEAPON_TAGS.map((weapon) => ({ value: weapon, label: weapon })),
+                  ]}
+                />
+                <FilterSelect
+                  id="champion-filter"
+                  label="Champion focus"
+                  value={filters.champion}
+                  onChange={(value) =>
+                    setFilters((current) => ({
+                      ...current,
+                      champion: value as ChampionTag | 'all',
+                    }))
+                  }
+                  options={[
+                    { value: 'all', label: 'Any champion focus' },
+                    ...CHAMPION_TAGS.map((champion) => ({
+                      value: champion,
+                      label: champion,
+                    })),
+                  ]}
+                />
+                <FilterSelect
+                  id="sort-filter"
+                  label="Sort"
+                  value={sortMode}
+                  onChange={(value) => setSortMode(value as SortMode)}
+                  options={[
+                    { value: 'newest', label: 'Newest first' },
+                    { value: 'oldest', label: 'Oldest first' },
+                    { value: 'artifact-az', label: 'Alphabetical by artifact' },
+                    { value: 'season-az', label: 'Alphabetical by season' },
+                  ]}
+                />
+              </div>
+
+              <div className="filters-sidebar__note">
+                <p className="section-label">Recovery status</p>
+                <p>
+                  The directory now uses recovered artifact grids instead of placeholder unknown focus tags.
+                </p>
+              </div>
+            </section>
+          </aside>
+
+          <section className="results-panel catalog-panel" aria-live="polite">
+            <div className="results-header">
+              <div>
+                <p className="section-label">Catalog</p>
+                <h2>{filteredArtifacts.length} matching artifacts</h2>
+              </div>
+              <p className="section-note">
+                App shell direction is based on established dashboard template patterns, then tuned to the Destiny artifact workflow.
+              </p>
             </div>
-          ) : (
-            <div className="artifact-grid">
-              {filteredArtifacts.map((artifact) => (
-                <article key={artifact.id} className="artifact-card">
-                  <div className="artifact-card__media">
-                    {artifact.iconPath ? (
-                      <img
-                        src={`https://www.bungie.net${artifact.iconPath}`}
-                        alt={`${artifact.artifactName} icon`}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="artifact-card__placeholder" aria-hidden="true">
-                        <span>Artifact</span>
-                      </div>
-                    )}
-                    <span className={`status-badge ${artifact.confidence === 'high' ? 'verified' : 'recovered'}`}>
-                      {artifact.confidence === 'high' ? 'High confidence' : 'Recovered grid'}
-                    </span>
-                  </div>
 
-                  <div className="artifact-card__body">
-                    <p className="artifact-card__season">{getSeasonLabel(artifact)}</p>
-                    <h3>{artifact.artifactName}</h3>
-                    <p className="artifact-card__meta">
-                      {artifact.seasonNumber ? `Season ${artifact.seasonNumber}` : 'Season number unknown'}
-                    </p>
-                    <p className="artifact-card__dates">{formatDateRange(artifact)}</p>
-                    <p className="artifact-card__era">{artifact.expansionEra}</p>
-
-                    <ChipRow label="Element focus">
-                      {artifact.elementFocus.map((element) => (
-                        <TagChip key={element} tone={elementToneMap[element]}>
-                          {element}
-                        </TagChip>
-                      ))}
-                    </ChipRow>
-
-                    <ChipRow label="Weapon focus">
-                      {artifact.weaponFocus.map((weapon) => (
-                        <TagChip key={weapon} tone={weaponToneMap[weapon] ?? 'weapon-default'}>
-                          {weapon}
-                        </TagChip>
-                      ))}
-                    </ChipRow>
-
-                    <ChipRow label="Champion mods">
-                      {artifact.championFocus.length > 0 ? (
-                        artifact.championFocus.map((champion) => (
-                          <TagChip key={champion} tone={championToneMap[champion]}>
-                            {champion}
-                          </TagChip>
-                        ))
+            {filteredArtifacts.length === 0 ? (
+              <div className="empty-state">
+                <h3>No artifacts matched this filter set.</h3>
+                <p>Reset one or more filters, or search by a broader season, weapon, or element tag.</p>
+              </div>
+            ) : (
+              <div className="artifact-grid">
+                {filteredArtifacts.map((artifact) => (
+                  <article key={artifact.id} className="artifact-card">
+                    <div className="artifact-card__media">
+                      {artifact.iconPath ? (
+                        <img
+                          src={`https://www.bungie.net${artifact.iconPath}`}
+                          alt={`${artifact.artifactName} icon`}
+                          loading="lazy"
+                        />
                       ) : (
-                        <TagChip tone="unknown">Unconfirmed</TagChip>
+                        <div className="artifact-card__placeholder" aria-hidden="true">
+                          <span>Artifact</span>
+                        </div>
                       )}
-                    </ChipRow>
+                      <span className={`status-badge ${artifact.confidence === 'high' ? 'verified' : 'recovered'}`}>
+                        {artifact.confidence === 'high' ? 'High confidence' : 'Recovered grid'}
+                      </span>
+                    </div>
 
-                    <button
-                      type="button"
-                      className="view-button"
-                      onClick={() => openArtifact(artifact.id)}
-                    >
-                      Inspect artifact
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
+                    <div className="artifact-card__body">
+                      <p className="artifact-card__season">{getSeasonLabel(artifact)}</p>
+                      <h3>{artifact.artifactName}</h3>
+                      <p className="artifact-card__meta">
+                        {artifact.seasonNumber ? `Season ${artifact.seasonNumber}` : 'Season number unknown'}
+                      </p>
+                      <p className="artifact-card__dates">{formatDateRange(artifact)}</p>
+                      <p className="artifact-card__era">{artifact.expansionEra}</p>
+
+                      <ChipRow label="Element focus">
+                        {artifact.elementFocus.map((element) => (
+                          <TagChip key={element} tone={elementToneMap[element]}>
+                            {element}
+                          </TagChip>
+                        ))}
+                      </ChipRow>
+
+                      <ChipRow label="Weapon focus">
+                        {artifact.weaponFocus.map((weapon) => (
+                          <TagChip key={weapon} tone={weaponToneMap[weapon] ?? 'weapon-default'}>
+                            {weapon}
+                          </TagChip>
+                        ))}
+                      </ChipRow>
+
+                      <ChipRow label="Champion mods">
+                        {artifact.championFocus.length > 0 ? (
+                          artifact.championFocus.map((champion) => (
+                            <TagChip key={champion} tone={championToneMap[champion]}>
+                              {champion}
+                            </TagChip>
+                          ))
+                        ) : (
+                          <TagChip tone="unknown">Unconfirmed</TagChip>
+                        )}
+                      </ChipRow>
+
+                      <button
+                        type="button"
+                        className="view-button"
+                        onClick={() => openArtifact(artifact.id)}
+                      >
+                        Inspect artifact
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
       </main>
 
       {selectedArtifact ? (

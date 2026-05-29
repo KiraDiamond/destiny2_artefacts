@@ -41,6 +41,7 @@ type ParsedRow = {
 }
 
 const OUTPUT_FILE = path.resolve(process.cwd(), 'src/data/wikiArtifactOverrides.ts')
+const ICON_OUTPUT_DIR = path.resolve(process.cwd(), 'public/artifact-icons')
 
 const ELEMENT_ORDER = ['Solar', 'Arc', 'Void', 'Stasis', 'Strand', 'Prismatic', 'Kinetic', 'Mixed', 'Unknown']
 const WEAPON_ORDER = [
@@ -234,6 +235,9 @@ const WIKI_CONFIGS: WikiConfig[] = [
 await main()
 
 async function main() {
+  await fs.mkdir(ICON_OUTPUT_DIR, { recursive: true })
+  const iconCache = new Map<string, Promise<string | null>>()
+
   const entries = await mapWithConcurrency(WIKI_CONFIGS, 6, async (config) => {
     const raw = await fetchRaw(config)
     const rows =
@@ -241,7 +245,7 @@ async function main() {
         ? parseD2WikiRows(raw)
         : parseDestinypediaRows(raw)
 
-    const mods = rows.map((row) => buildModRecord(config, row))
+    const mods = await Promise.all(rows.map((row) => buildModRecord(config, row, iconCache)))
     return [config.id, {
       championFocus: collectFocus(mods.flatMap((mod) => mod.tags.champions), CHAMPION_ORDER, []),
       confidence: config.confidence,
@@ -393,22 +397,57 @@ function parseDestinypediaRows(raw: string) {
   return rows
 }
 
-function buildModRecord(config: WikiConfig, row: ParsedRow): ArtifactModRecord {
+async function buildModRecord(
+  config: WikiConfig,
+  row: ParsedRow,
+  iconCache: Map<string, Promise<string | null>>,
+): Promise<ArtifactModRecord> {
   const tags = inferTags(row.name, row.description, row.type)
+  const iconPath = row.iconFile ? await cacheIcon(row.iconFile, iconCache) : null
 
   return {
     column: row.column,
     cost: row.cost,
     description: row.description,
-    iconPath: row.iconFile
-      ? `https://d2.destinygamewiki.com/wiki/Special:FilePath/${encodeURIComponent(row.iconFile).replace(/%20/g, '_')}`
-      : null,
+    iconPath,
     name: row.name,
     row: row.row,
     source: config.label,
     tags,
     type: row.type,
   }
+}
+
+async function cacheIcon(
+  iconFile: string,
+  iconCache: Map<string, Promise<string | null>>,
+) {
+  const existing = iconCache.get(iconFile)
+  if (existing) {
+    return existing
+  }
+
+  const task = downloadIcon(iconFile)
+  iconCache.set(iconFile, task)
+  return task
+}
+
+async function downloadIcon(iconFile: string) {
+  const remoteUrl = `https://d2.destinygamewiki.com/wiki/Special:FilePath/${encodeURIComponent(iconFile).replace(/%20/g, '_')}`
+  const response = await fetch(remoteUrl)
+  if (!response.ok) {
+    return null
+  }
+
+  const outputName = sanitizeIconFileName(iconFile)
+  const outputPath = path.join(ICON_OUTPUT_DIR, outputName)
+  const buffer = Buffer.from(await response.arrayBuffer())
+  await fs.writeFile(outputPath, buffer)
+  return `/artifact-icons/${outputName}`
+}
+
+function sanitizeIconFileName(fileName: string) {
+  return fileName.replace(/[^a-zA-Z0-9._-]/g, '_')
 }
 
 function parseWikiLink(value: string) {
