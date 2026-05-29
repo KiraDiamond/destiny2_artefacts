@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "validate:data": "tsx scripts/validate-data.ts",
-    "import:manifest": "tsx scripts/import-manifest.ts"
+    "import:manifest": "tsx scripts/import-manifest.ts",
+    "sync:wiki": "tsx scripts/sync-wiki-artifacts.ts"
   },
   "dependencies": {
     "react": "^19.2.6",

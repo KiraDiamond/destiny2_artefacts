@@ -49,6 +49,9 @@ export type ArtifactMod = {
   column: number
   row: number
   needsVerification?: boolean
+  type?: string | null
+  cost?: number | null
+  iconPath?: string | null
   tags: {
     elements: ElementTag[]
     weapons: WeaponTag[]

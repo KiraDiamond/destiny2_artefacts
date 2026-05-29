@@ -1,4 +1,11 @@
-import { startTransition, useDeferredValue, useEffect, useState, type ReactNode } from 'react'
+import {
+  startTransition,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
 import './App.css'
 import { ARTIFACTS } from './data/artifacts'
 import {
@@ -19,11 +26,11 @@ type SortMode =
   | 'season-az'
 
 type FilterState = {
-  seasonId: string
-  era: string
-  element: ElementTag | 'all'
-  weapon: WeaponTag | 'all'
   champion: ChampionTag | 'all'
+  element: ElementTag | 'all'
+  era: string
+  seasonId: string
+  weapon: WeaponTag | 'all'
 }
 
 const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
@@ -33,6 +40,9 @@ const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
 })
 
 const DETAIL_HASH_PREFIX = '#artifact/'
+const LEGACY_COLUMN_THRESHOLDS = [0, 2, 5, 9, 14]
+const MODERN_COLUMN_THRESHOLDS = [0, 3, 5, 7, 10]
+const MODERN_UNLOCK_CAP = 12
 
 const elementToneMap: Record<ElementTag, string> = {
   Solar: 'solar',
@@ -66,6 +76,10 @@ const weaponToneMap: Partial<Record<WeaponTag, string>> = {
   'Grenade Launcher': 'weapon-grenade-launcher',
   'Linear Fusion Rifle': 'weapon-linear',
   'Machine Gun': 'weapon-machine-gun',
+  'Fusion Rifle': 'weapon-fusion',
+  Glaive: 'weapon-glaive',
+  'Trace Rifle': 'weapon-trace',
+  'Rocket Launcher': 'weapon-rocket',
 }
 
 const seasonOptions = ARTIFACTS.map((artifact) => ({
@@ -87,21 +101,35 @@ function App() {
     champion: 'all',
   })
   const [selectedArtifactId, setSelectedArtifactId] = useState<string | null>(() => readHashArtifactId())
+  const [selectedModKey, setSelectedModKey] = useState<string | null>(() => {
+    const artifact = getArtifactById(readHashArtifactId())
+    return artifact?.mods[0] ? getModKey(artifact.mods[0]) : null
+  })
+  const [unlockPreview, setUnlockPreview] = useState(() => {
+    const artifact = getArtifactById(readHashArtifactId())
+    return artifact ? getArtifactUnlockCap(artifact) : 0
+  })
   const [shareState, setShareState] = useState<'idle' | 'copied' | 'failed'>('idle')
+
+  function syncArtifactSelection(id: string | null) {
+    const artifact = getArtifactById(id)
+    setSelectedArtifactId(id)
+    setSelectedModKey(artifact?.mods[0] ? getModKey(artifact.mods[0]) : null)
+    setUnlockPreview(artifact ? getArtifactUnlockCap(artifact) : 0)
+    setShareState('idle')
+  }
 
   function updateHash(id: string | null) {
     if (id) {
       const nextUrl = `${window.location.pathname}${window.location.search}${DETAIL_HASH_PREFIX}${id}`
       window.history.pushState({}, '', nextUrl)
-      setSelectedArtifactId(id)
-      setShareState('idle')
+      syncArtifactSelection(id)
       return
     }
 
     const nextUrl = `${window.location.pathname}${window.location.search}`
     window.history.pushState({}, '', nextUrl)
-    setSelectedArtifactId(null)
-    setShareState('idle')
+    syncArtifactSelection(null)
   }
 
   function openArtifact(id: string) {
@@ -114,8 +142,7 @@ function App() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      setSelectedArtifactId(readHashArtifactId())
-      setShareState('idle')
+      syncArtifactSelection(readHashArtifactId())
     }
 
     window.addEventListener('popstate', handleHashChange)
@@ -154,12 +181,21 @@ function App() {
     }
   }, [selectedArtifactId])
 
-  const filteredArtifacts = ARTIFACTS.filter((artifact) =>
-    matchesArtifact(artifact, deferredQuery, filters),
-  ).sort((left, right) => compareArtifacts(left, right, sortMode))
+  const filteredArtifacts = useMemo(
+    () =>
+      ARTIFACTS.filter((artifact) => matchesArtifact(artifact, deferredQuery, filters)).sort((left, right) =>
+        compareArtifacts(left, right, sortMode),
+      ),
+    [deferredQuery, filters, sortMode],
+  )
 
-  const selectedArtifact = selectedArtifactId
-    ? ARTIFACTS.find((artifact) => artifact.id === selectedArtifactId) ?? null
+  const selectedArtifact = useMemo(
+    () => (selectedArtifactId ? getArtifactById(selectedArtifactId) : null),
+    [selectedArtifactId],
+  )
+
+  const selectedMod = selectedArtifact && selectedModKey
+    ? findModByKey(selectedArtifact.mods, selectedModKey)
     : null
 
   const completeArtifacts = ARTIFACTS.filter((artifact) => artifact.mods.length > 0).length
@@ -182,23 +218,24 @@ function App() {
       <main className="shell">
         <section className="hero-panel">
           <div className="hero-copy">
-            <p className="eyebrow">Static research archive</p>
+            <p className="eyebrow">Recovered archive</p>
             <h1>Destiny 2 Artifact Codex</h1>
             <p className="subtitle">
-              Browse every seasonal artifact, perk grid, element focus, and weapon focus.
+              Browse recovered seasonal artifact grids, inspect each perk in an in-game-inspired view,
+              and trace every artifact back to its source page.
             </p>
             <div className="hero-metrics" aria-label="Catalog summary">
               <div>
                 <span>{ARTIFACTS.length}</span>
-                <small>Artifacts seeded</small>
+                <small>Artifacts tracked</small>
               </div>
               <div>
                 <span>{completeArtifacts}</span>
-                <small>Detailed grids</small>
+                <small>Recovered grids</small>
               </div>
               <div>
-                <span>{ARTIFACTS.length - completeArtifacts}</span>
-                <small>Need mod data</small>
+                <span>{ARTIFACTS.filter((artifact) => artifact.confidence === 'high').length}</span>
+                <small>High confidence</small>
               </div>
             </div>
           </div>
@@ -221,7 +258,7 @@ function App() {
             <input
               id="artifact-search"
               type="search"
-              placeholder="Search artifacts, seasons, eras, or mods"
+              placeholder="Search artifacts, mods, perks, weapons, or elements"
               value={query}
               onChange={(event) => {
                 const nextValue = event.target.value
@@ -321,8 +358,7 @@ function App() {
               <h2>{filteredArtifacts.length} matching artifacts</h2>
             </div>
             <p className="section-note">
-              Element and weapon focus tags are curated from available mod grids. Unknown values stay
-              explicit instead of guessed.
+              Grid focus tags are now recovered from sourced perk lists instead of placeholder unknown values.
             </p>
           </div>
 
@@ -347,11 +383,9 @@ function App() {
                         <span>Artifact</span>
                       </div>
                     )}
-                    {artifact.mods.length === 0 ? (
-                      <span className="status-badge needs-data">Needs mod data</span>
-                    ) : (
-                      <span className="status-badge verified">Grid available</span>
-                    )}
+                    <span className={`status-badge ${artifact.confidence === 'high' ? 'verified' : 'recovered'}`}>
+                      {artifact.confidence === 'high' ? 'High confidence' : 'Recovered grid'}
+                    </span>
                   </div>
 
                   <div className="artifact-card__body">
@@ -396,7 +430,7 @@ function App() {
                       className="view-button"
                       onClick={() => openArtifact(artifact.id)}
                     >
-                      View mods
+                      Inspect artifact
                     </button>
                   </div>
                 </article>
@@ -407,144 +441,235 @@ function App() {
       </main>
 
       {selectedArtifact ? (
-        <div className="modal-backdrop" onClick={closeArtifact}>
+        <div className="modal-backdrop inspector-backdrop" onClick={closeArtifact}>
           <section
-            className="artifact-modal"
+            className="artifact-inspector"
             role="dialog"
             aria-modal="true"
             aria-labelledby="artifact-detail-title"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="artifact-modal__header">
-              <div>
-                <p className="artifact-modal__eyebrow">{getSeasonLabel(selectedArtifact)}</p>
-                <h2 id="artifact-detail-title">{selectedArtifact.artifactName}</h2>
-                <p className="artifact-modal__subhead">
-                  {selectedArtifact.expansionEra} | {formatDateRange(selectedArtifact)}
-                </p>
+            <header className="artifact-inspector__header">
+              <div className="artifact-inspector__title-group">
+                <div className="artifact-inspector__icon-frame">
+                  {selectedArtifact.iconPath ? (
+                    <img
+                      src={`https://www.bungie.net${selectedArtifact.iconPath}`}
+                      alt={`${selectedArtifact.artifactName} icon`}
+                    />
+                  ) : (
+                    <div className="artifact-inspector__icon-fallback" aria-hidden="true">
+                      Artifact
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <p className="artifact-inspector__eyebrow">{getSeasonLabel(selectedArtifact)}</p>
+                  <h2 id="artifact-detail-title">{selectedArtifact.artifactName}</h2>
+                  <p className="artifact-inspector__subhead">
+                    Artifact | {selectedArtifact.expansionEra} | {formatDateRange(selectedArtifact)}
+                  </p>
+                </div>
               </div>
-              <div className="artifact-modal__actions">
+
+              <div className="artifact-inspector__actions">
                 <button type="button" className="share-button" onClick={handleShare}>
                   {shareState === 'copied'
                     ? 'Copied link'
                     : shareState === 'failed'
                       ? 'Copy failed'
-                      : 'Copy / share URL'}
+                      : 'Copy URL'}
                 </button>
                 <button type="button" className="close-button" onClick={closeArtifact} aria-label="Close artifact details">
                   Close
                 </button>
               </div>
-            </div>
-
-            <div className="artifact-modal__meta-grid">
-              <div>
-                <p className="detail-label">Artifact type</p>
-                <p>{selectedArtifact.artifactType}</p>
-              </div>
-              <div>
-                <p className="detail-label">Confidence</p>
-                <p>{selectedArtifact.confidence}</p>
-              </div>
-              <div>
-                <p className="detail-label">Champion focus</p>
-                <p>
-                  {selectedArtifact.championFocus.length > 0
-                    ? selectedArtifact.championFocus.join(', ')
-                    : 'Unconfirmed'}
-                </p>
-              </div>
-            </div>
-
-            <div className="artifact-modal__notes">
-              <div>
-                <p className="detail-label">Notes / disclaimer</p>
-                <p>{selectedArtifact.notes}</p>
-                {selectedArtifact.releaseDateNote ? (
-                  <p className="detail-footnote">{selectedArtifact.releaseDateNote}</p>
-                ) : null}
-              </div>
-              <div>
-                <p className="detail-label">Sources</p>
-                <ul className="source-list">
-                  {selectedArtifact.sources.map((source) => (
-                    <li key={`${selectedArtifact.id}-${source.url}`}>
-                      <a href={source.url} target="_blank" rel="noreferrer">
-                        {source.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            </header>
 
             {selectedArtifact.mods.length === 0 ? (
-              <div className="detail-empty">
-                <h3>Needs mod data</h3>
-                <p>
-                  This artifact is included in the catalog, but its full perk grid still needs to be
-                  added and verified against approved sources.
-                </p>
+              <div className="artifact-inspector__empty">
+                <div className="detail-empty">
+                  <h3>Needs mod data</h3>
+                  <p>{selectedArtifact.notes}</p>
+                </div>
               </div>
             ) : (
-              <div className="mod-grid">
-                {groupModsByColumn(selectedArtifact.mods).map(([column, mods]) => (
-                  <section key={column} className="mod-column">
-                    <header className="mod-column__header">
-                      <p>Column {column}</p>
-                      <span>{mods.length} perks</span>
-                    </header>
-                    <div className="mod-column__list">
-                      {mods.map((mod) => (
-                        <article key={`${selectedArtifact.id}-${column}-${mod.row}-${mod.name}`} className="mod-card">
-                          <div className="mod-card__header">
-                            <div>
-                              <h3>{mod.name}</h3>
-                              <p>
-                                Column {mod.column} | Row {mod.row}
-                              </p>
-                            </div>
-                            <span className="mod-source">{mod.source}</span>
-                          </div>
-                          <p className="mod-card__description">{cleanDescription(mod.description)}</p>
-                          <div className="mod-tags">
-                            {mod.tags.elements.map((element) => (
-                              <TagChip key={`${mod.name}-${element}`} tone={elementToneMap[element]}>
-                                {element}
-                              </TagChip>
-                            ))}
-                            {mod.tags.weapons.map((weapon) => (
-                              <TagChip key={`${mod.name}-${weapon}`} tone={weaponToneMap[weapon] ?? 'weapon-default'}>
-                                {weapon}
-                              </TagChip>
-                            ))}
-                            {mod.tags.champions.map((champion) => (
-                              <TagChip key={`${mod.name}-${champion}`} tone={championToneMap[champion]}>
-                                {champion}
-                              </TagChip>
-                            ))}
-                            {mod.tags.subclasses.map((subclass) => (
-                              <TagChip key={`${mod.name}-${subclass}`} tone="subclass">
-                                {subclass}
-                              </TagChip>
-                            ))}
-                            {mod.tags.mechanics.map((mechanic) => (
-                              <TagChip key={`${mod.name}-${mechanic}`} tone="mechanic">
-                                {mechanic}
-                              </TagChip>
-                            ))}
-                          </div>
-                        </article>
+              <div className="artifact-inspector__body">
+                <section className="artifact-board-panel">
+                  <div className="artifact-board-panel__top">
+                    <div className="artifact-board-panel__availability">
+                      <p>Acquired</p>
+                      <strong>{unlockPreview}</strong>
+                    </div>
+                    <div className="artifact-board-panel__slider">
+                      <label htmlFor="unlock-preview">Unlock preview</label>
+                      <input
+                        id="unlock-preview"
+                        type="range"
+                        min={0}
+                        max={getArtifactUnlockCap(selectedArtifact)}
+                        value={unlockPreview}
+                        onChange={(event) => setUnlockPreview(Number(event.target.value))}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="artifact-board-shell">
+                    <div className="artifact-board">
+                      {buildInspectorColumns(selectedArtifact.mods).map((column, columnIndex) => (
+                        <div key={`${selectedArtifact.id}-column-${columnIndex + 1}`} className="artifact-board__column">
+                          {column.map((mod, rowIndex) => {
+                            if (!mod) {
+                              return <div key={`${selectedArtifact.id}-empty-${columnIndex + 1}-${rowIndex + 1}`} className="artifact-tile artifact-tile--ghost" aria-hidden="true" />
+                            }
+
+                            const modKey = getModKey(mod)
+                            const active = selectedModKey === modKey
+                            const unlocked = isModUnlocked(selectedArtifact, mod, unlockPreview)
+
+                            return (
+                              <button
+                                key={modKey}
+                                type="button"
+                                className="artifact-tile"
+                                data-active={active}
+                                data-locked={!unlocked}
+                                onMouseEnter={() => setSelectedModKey(modKey)}
+                                onFocus={() => setSelectedModKey(modKey)}
+                                onClick={() => setSelectedModKey(modKey)}
+                                aria-pressed={active}
+                              >
+                                {mod.iconPath ? (
+                                  <img src={mod.iconPath} alt="" loading="lazy" />
+                                ) : (
+                                  <span className="artifact-tile__fallback" aria-hidden="true">
+                                    {getModInitials(mod.name)}
+                                  </span>
+                                )}
+                                {mod.cost !== null ? (
+                                  <span className="artifact-tile__cost">{mod.cost}</span>
+                                ) : null}
+                              </button>
+                            )
+                          })}
+                        </div>
                       ))}
                     </div>
+
+                    <div className="artifact-board__thresholds" aria-hidden="true">
+                      {getArtifactTierThresholds(selectedArtifact).map((threshold, index) => (
+                        <div key={`${selectedArtifact.id}-threshold-${index + 1}`} className="artifact-board__threshold">
+                          <span>{threshold}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <aside className="artifact-detail-panel">
+                  {selectedMod ? (
+                    <ArtifactDetailCard
+                      artifact={selectedArtifact}
+                      mod={selectedMod}
+                      unlocked={isModUnlocked(selectedArtifact, selectedMod, unlockPreview)}
+                    />
+                  ) : null}
+
+                  <section className="artifact-detail-panel__meta">
+                    <div>
+                      <p className="detail-label">Confidence</p>
+                      <p>{selectedArtifact.confidence}</p>
+                    </div>
+                    <div>
+                      <p className="detail-label">Notes</p>
+                      <p>{selectedArtifact.notes}</p>
+                      {selectedArtifact.releaseDateNote ? (
+                        <p className="detail-footnote">{selectedArtifact.releaseDateNote}</p>
+                      ) : null}
+                    </div>
+                    <div>
+                      <p className="detail-label">Sources</p>
+                      <ul className="source-list">
+                        {selectedArtifact.sources.map((source) => (
+                          <li key={`${selectedArtifact.id}-${source.url}`}>
+                            <a href={source.url} target="_blank" rel="noreferrer">
+                              {source.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </section>
-                ))}
+                </aside>
               </div>
             )}
           </section>
         </div>
       ) : null}
     </>
+  )
+}
+
+function ArtifactDetailCard({
+  artifact,
+  mod,
+  unlocked,
+}: {
+  artifact: Artifact
+  mod: ArtifactMod
+  unlocked: boolean
+}) {
+  const requirement = getArtifactUnlockRequirement(artifact, mod)
+  const requirementLabel =
+    requirement === 0
+      ? 'Available by default'
+      : `Must acquire ${requirement} artifact ${usesLegacyArtifactUnlocks(artifact) ? 'mods' : 'perks'}`
+
+  const detailTags = [
+    ...mod.tags.elements.map((element) => ({ tone: elementToneMap[element], value: element })),
+    ...mod.tags.weapons.map((weapon) => ({
+      tone: weaponToneMap[weapon] ?? 'weapon-default',
+      value: weapon,
+    })),
+    ...mod.tags.champions.map((champion) => ({
+      tone: championToneMap[champion],
+      value: champion,
+    })),
+    ...mod.tags.mechanics.slice(0, 6).map((mechanic) => ({ tone: 'mechanic', value: mechanic })),
+  ]
+
+  return (
+    <section className="artifact-detail-card" data-locked={!unlocked}>
+      <div className="artifact-detail-card__header">
+        <p className="artifact-detail-card__type">{mod.type ?? 'Artifact Perk'}</p>
+        <h3>{mod.name}</h3>
+      </div>
+
+      <div className="artifact-detail-card__requirement" data-locked={!unlocked}>
+        {requirementLabel}
+      </div>
+
+      {mod.cost !== null ? (
+        <div className="artifact-detail-card__cost">
+          <span>{mod.cost}</span>
+          <small>Energy cost</small>
+        </div>
+      ) : null}
+
+      <p className="artifact-detail-card__description">{cleanDescription(mod.description)}</p>
+
+      {detailTags.length > 0 ? (
+        <div className="artifact-detail-card__tags">
+          {detailTags.map((tag) => (
+            <TagChip key={`${mod.name}-${tag.value}`} tone={tag.tone}>
+              {tag.value}
+            </TagChip>
+          ))}
+        </div>
+      ) : null}
+
+      <p className="artifact-detail-card__source">{mod.source}</p>
+    </section>
   )
 }
 
@@ -698,18 +823,60 @@ function compareArtifacts(left: Artifact, right: Artifact, sortMode: SortMode) {
   return getSeasonLabel(left).localeCompare(getSeasonLabel(right))
 }
 
-function groupModsByColumn(mods: ArtifactMod[]) {
-  const grouped = new Map<number, ArtifactMod[]>()
+function usesLegacyArtifactUnlocks(artifact: Artifact) {
+  return (artifact.seasonNumber ?? 999) < 20
+}
 
-  for (const mod of mods) {
-    const bucket = grouped.get(mod.column) ?? []
-    bucket.push(mod)
-    grouped.set(mod.column, bucket)
+function getArtifactTierThresholds(artifact: Artifact) {
+  return usesLegacyArtifactUnlocks(artifact) ? LEGACY_COLUMN_THRESHOLDS : MODERN_COLUMN_THRESHOLDS
+}
+
+function getArtifactUnlockRequirement(artifact: Artifact, mod: ArtifactMod) {
+  const thresholds = getArtifactTierThresholds(artifact)
+  return thresholds[mod.column - 1] ?? thresholds.at(-1) ?? 0
+}
+
+function getArtifactUnlockCap(artifact: Artifact) {
+  if (usesLegacyArtifactUnlocks(artifact)) {
+    return LEGACY_COLUMN_THRESHOLDS.at(-1) ?? artifact.mods.length
   }
 
-  return Array.from(grouped.entries())
-    .sort(([left], [right]) => left - right)
-    .map(([column, bucket]) => [column, bucket.sort((left, right) => left.row - right.row)] as const)
+  return MODERN_UNLOCK_CAP
+}
+
+function isModUnlocked(artifact: Artifact, mod: ArtifactMod, unlockPreview: number) {
+  return unlockPreview >= getArtifactUnlockRequirement(artifact, mod)
+}
+
+function buildInspectorColumns(mods: ArtifactMod[]) {
+  const maxColumn = Math.max(5, ...mods.map((mod) => mod.column))
+  const maxRow = Math.max(1, ...mods.map((mod) => mod.row))
+
+  return Array.from({ length: maxColumn }, (_, columnIndex) =>
+    Array.from({ length: maxRow }, (_, rowIndex) =>
+      mods.find((mod) => mod.column === columnIndex + 1 && mod.row === rowIndex + 1) ?? null,
+    ),
+  )
+}
+
+function getModKey(mod: ArtifactMod) {
+  return `${mod.column}-${mod.row}-${mod.name}`
+}
+
+function findModByKey(mods: ArtifactMod[], key: string) {
+  return mods.find((mod) => getModKey(mod) === key) ?? null
+}
+
+function getArtifactById(id: string | null) {
+  return id ? ARTIFACTS.find((artifact) => artifact.id === id) ?? null : null
+}
+
+function getModInitials(name: string) {
+  return name
+    .split(/\s+/)
+    .slice(0, 3)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('')
 }
 
 function cleanDescription(description: string) {

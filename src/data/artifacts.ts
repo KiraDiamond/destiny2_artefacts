@@ -1,4 +1,5 @@
 import type { Artifact, ArtifactMod, SourceLink } from './types'
+import { WIKI_ARTIFACT_OVERRIDES } from './wikiArtifactOverrides'
 
 function slugify(value: string) {
   return value
@@ -831,7 +832,7 @@ const implementOfCuriosityMods: ArtifactMod[] = [
   ),
 ]
 
-export const ARTIFACTS: Artifact[] = [
+const BASE_ARTIFACTS: Artifact[] = [
   {
     id: 'season-of-the-undying',
     seasonNumber: 8,
@@ -1265,3 +1266,28 @@ export const ARTIFACTS: Artifact[] = [
     mods: [],
   },
 ]
+
+export const ARTIFACTS: Artifact[] = BASE_ARTIFACTS.map((artifact) => {
+  const override = WIKI_ARTIFACT_OVERRIDES[artifact.id]
+  if (!override) {
+    return artifact
+  }
+
+  return {
+    ...artifact,
+    ...override,
+    sources: dedupeSources([...(artifact.sources ?? []), ...(override.sources ?? [])]),
+  }
+})
+
+function dedupeSources(sources: SourceLink[]) {
+  const seen = new Set<string>()
+  return sources.filter((source) => {
+    if (seen.has(source.url)) {
+      return false
+    }
+
+    seen.add(source.url)
+    return true
+  })
+}
