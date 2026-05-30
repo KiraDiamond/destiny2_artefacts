@@ -559,7 +559,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Aiming down sights loads a powerful explosive payload that staggers unshielded enemies. Strong against Unstoppable Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Unstoppable_Shot_icon.png",
         "name": "Unstoppable Shot",
         "row": 2,
         "source": "Destiny 2 Wiki The Lantern of Osiris page",
@@ -601,7 +601,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Fully drawn arrows release a powerful explosive payload that staggers unshielded enemies. Strong against Unstoppable Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Unstoppable_Arrows_icon.png",
         "name": "Unstoppable Arrows",
         "row": 4,
         "source": "Destiny 2 Wiki The Lantern of Osiris page",
@@ -641,7 +641,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 2,
         "cost": null,
         "description": "Greatly increases reload speed of Rifle-class weapons.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Enhanced_Rifle_Loader_icon.png",
         "name": "Enhanced Rifle Loader",
         "row": 1,
         "source": "Destiny 2 Wiki The Lantern of Osiris page",
@@ -696,7 +696,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 2,
         "cost": null,
         "description": "Greatly increases the reload speed of Sniper Rifles.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Enhanced_Sniper_Rifle_icon.png",
         "name": "Enhanced Sniper Rifle Loader",
         "row": 4,
         "source": "Destiny 2 Wiki The Lantern of Osiris page",
@@ -905,7 +905,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "Staggering Unstoppable Champions temporarily boosts weapon damage for allied players. |}",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Tenderizer_icon.png",
         "name": "Tenderizer",
         "row": 5,
         "source": "Destiny 2 Wiki The Lantern of Osiris page",
@@ -1373,7 +1373,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "Landing consecutive hits on enemy targets causes disruption, delaying ability energy regeneration and lowering combatant damage output. Strong against Overload Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Disrupting_Blade_icon.png",
         "name": "Disrupting Blade",
         "row": 1,
         "source": "Destiny 2 Wiki Warmind Khanjali page",
@@ -2403,7 +2403,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 3,
         "cost": null,
         "description": "Reduces flinching from incoming fire while aiming Scout Rifles.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Unflinching_Scout_Rifle_Aim_icon.png",
         "name": "Unflinching Scout Rifle Aim",
         "row": 3,
         "source": "Destiny 2 Wiki Fang of Xivu Arath page",
@@ -2618,7 +2618,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Become Charged with Light by defeating combatants with Void melee abilities.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Abyssal_Charge_icon.png",
         "name": "Abyssal Charge",
         "row": 4,
         "source": "Destiny 2 Wiki Fang of Xivu Arath page",
@@ -2899,7 +2899,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 3,
         "cost": null,
         "description": "Reduces flinching from incoming fire while aiming Scout Rifles.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Unflinching_Scout_Rifle_Aim_icon.png",
         "name": "Unflinching Scout Rifle Aim",
         "row": 1,
         "source": "Destiny 2 Wiki Bell of Conquests page",
@@ -3021,7 +3021,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "Landing consecutive hits with any Sword you are wielding disrupts combatants, stunning them, delaying ability energy regeneration and lowering combatant damage output.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Disrupting_Blade_icon.png",
         "name": "Disrupting Blade",
         "row": 2,
         "source": "Destiny 2 Wiki Bell of Conquests page",
@@ -3101,7 +3101,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Your Light abilities do bonus damage to combatants affected by Stasis.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Focusing_Lens_Icon.png",
         "name": "Focusing Lens",
         "row": 1,
         "source": "Destiny 2 Wiki Bell of Conquests page",
@@ -3848,7 +3848,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Landing consecutive hits with any Sword you are wielding disrupts combatants, stunning them, delaying ability energy regeneration and lowering combatant damage output. Strong against Overload Overload Champions. |}",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Disrupting_Blade_icon.png",
         "name": "Disrupting Blade",
         "row": 5,
         "source": "Destiny 2 Wiki Wayfinder's Compass page",
@@ -4231,7 +4231,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Your Light abilities do bonus damage to combatants affected by Stasis.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Focusing_Lens_Icon.png",
         "name": "Focusing Lens",
         "row": 4,
         "source": "Destiny 2 Wiki Wayfinder's Compass page",
@@ -8656,6 +8656,1577 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
       "Mixed"
     ]
   },
+  "episode-echoes": {
+    "championFocus": [
+      "Anti-Barrier",
+      "Overload",
+      "Unstoppable"
+    ],
+    "confidence": "medium",
+    "elementFocus": [
+      "Solar",
+      "Arc",
+      "Void",
+      "Stasis",
+      "Strand",
+      "Prismatic",
+      "Kinetic",
+      "Mixed"
+    ],
+    "mods": [
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Your equipped Pulse Rifles fire shield-piercing rounds and stun Barrier Barrier Champions. Additionally, Auto Rifles are always overcharged when the modifier is active.",
+        "iconPath": "/artifact-icons/Anti-Barrier_Pulse_Rifle_icon.png",
+        "name": "Anti-Barrier Pulse Rifle",
+        "row": 1,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [
+            "Anti-Barrier"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Auto Rifle",
+            "Pulse Rifle",
+            "Mixed"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Aiming down the sights of a Hand Cannon for a short time loads a powerful explosive payload that stuns unshielded combatants. Strong against Unstoppable Unstoppable Champions. Additionally, Hand Cannons are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Unstoppable_Sidearm_icon.png",
+        "name": "Unstoppable Sidearm",
+        "row": 2,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [
+            "Unstoppable"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Hand Cannon",
+            "Sidearm",
+            "Mixed"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Aiming down the sights of a Scout Rifle for a short time loads a powerful explosive payload that stuns unshielded combatants. Strong against Unstoppable Unstoppable Champions. Additionally, Scout Rifles are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Unstoppable_Scout_Rifle_icon.png",
+        "name": "Unstoppable Scout Rifle",
+        "row": 3,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [
+            "Unstoppable"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Scout Rifle"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Landing consecutive hits with any Hand Cannon you are wielding disrupts combatants, stunning them, delaying ability energy regeneration and lowering combatant damage output. Strong against Overload Overload Champions.",
+        "iconPath": "/artifact-icons/Overload_Hand_Cannon_icon.png",
+        "name": "Anti-Barrier Submachine Gun",
+        "row": 4,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [
+            "Anti-Barrier",
+            "Overload"
+          ],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": [
+            "Hand Cannon",
+            "SMG",
+            "Machine Gun",
+            "Mixed"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Sustained fire from Pulse Rifles disrupts combatants, stunning them, delaying ability energy regeneration, and lowering combatant damage output. Strong against Overload Overload Champions. Additionally, Pulse Rifles are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Overload_Pulse_Rifle_icon.png",
+        "name": "Overload Pulse Rifle",
+        "row": 5,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [
+            "Overload"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Pulse Rifle"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Your equipped Pulse Rifles fire shield-piercing rounds and stun Barrier Barrier Champions. Additionally, Auto Rifles are always overcharged when the modifier is active.",
+        "iconPath": "/artifact-icons/Anti-Barrier_Sniper_Rifle_icon.png",
+        "name": "Anti-Barrier Sniper Rifle",
+        "row": 6,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [
+            "Anti-Barrier"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Auto Rifle",
+            "Pulse Rifle",
+            "Sniper Rifle",
+            "Mixed"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Sustained fire from Auto Rifles disrupts combatants, stunning them, delaying ability energy regeneration, and lowering combatant damage output. Strong against Overload Overload Champions. Additionally, Pulse Rifles are always overcharged when that modifier is active. |}",
+        "iconPath": "/artifact-icons/Overload_Auto_Rifle_icon.png",
+        "name": "Overload Auto Rifle",
+        "row": 7,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [
+            "Overload"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Auto Rifle",
+            "Pulse Rifle",
+            "Mixed"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Weapons with the Radiolaria Transposer origin perk deal increased damage to Vex. Extends the duration of the radiolaria pools created by Radiolaria Transposer.",
+        "iconPath": "/artifact-icons/Logic_Reductor_icon.png",
+        "name": "Logic Reductor",
+        "row": 1,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Weapons with the Dealer's Choice, Radiolaria Transposer, Collective Purpose, and Sundering Origin traits are always Overcharged weapons for you when that modifier is active.",
+        "iconPath": "/artifact-icons/Overcharged_Armory_icon.png",
+        "name": "Overcharged Armory",
+        "row": 2,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Overcharged",
+            "Origin Trait"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "The energy cost of Elemental Charge mods are significantly discounted.",
+        "iconPath": "/artifact-icons/Authorized_Mod_Elemental_Charge_icon.png",
+        "name": "Authorized Mod: Elemental Charge",
+        "row": 3,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Rounds loaded by the Cast No Shadows origin perk can overflow the magazine.",
+        "iconPath": "/artifact-icons/Saints_Inspiration_icon.png",
+        "name": "Saint's Inspiration",
+        "row": 4,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "While using weapons with the Dealer's Choice origin trait, combatant precision final blows or rapidly defeating combatants cause the target to explode, dealing Solar damage to nearby combatants. Having several equipped weapons with the Dealer's Choice origin trait increases the effect of the explosion.",
+        "iconPath": "/artifact-icons/Winning_Hand_icon.png",
+        "name": "Winning Hand",
+        "row": 5,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Solar"
+          ],
+          "mechanics": [
+            "Origin Trait"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "The energy cost of Scavenger mods are significantly discounted.",
+        "iconPath": "/artifact-icons/Authorized_Mod__Scavenger_icon.png",
+        "name": "Authorized Mod: Scavenger",
+        "row": 6,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "The energy cost of Charged Up mods are significantly discounted. |}",
+        "iconPath": "/artifact-icons/Authorized_Mod_Charged_Up_icon.png",
+        "name": "Authorized Mod: Charged Up",
+        "row": 7,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Rapid final blows with a Kinetic weapon or a weapon matching your equipped Super create an elemental pickup that matches your equipped Super.",
+        "iconPath": "/artifact-icons/Elemental_Siphon_icon.png",
+        "name": "Elemental Siphon",
+        "row": 1,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Kinetic"
+          ],
+          "mechanics": [
+            "Elemental Pickup"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Uninterrupted fire from a Sword you are wielding disrupts combatants, stunning them, delaying ability energy regeneration, and lowering combatant damage output. Strong against Overload Overload Champions. Additionally, Swords are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Overload_Sword_icon.png",
+        "name": "Overload Sword",
+        "row": 2,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [
+            "Overload"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Sword"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Stasis weapon final blows against slowed or frozen targets release a burst that slows.",
+        "iconPath": "/artifact-icons/Creeping_Chill_icon.png",
+        "name": "Creeping Chill",
+        "row": 3,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Stasis"
+          ],
+          "mechanics": [
+            "Slow"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Improves the benefits provided by the Noble Deeds, Unsated Hunger, Head Rush, and Dragon’s Vengeance Origin Traits. Additionally, weapons with these traits are always overcharged.",
+        "iconPath": "/artifact-icons/Press_The_Advantage_icon.png",
+        "name": "Press The Advantage",
+        "row": 4,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Overcharged",
+            "Origin Trait"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Destroying a Tangle with a Strand weapon creates a larger and more damaging explosion.",
+        "iconPath": "/artifact-icons/Threaded_Blast_icon.png",
+        "name": "Threaded Blast",
+        "row": 5,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Strand"
+          ],
+          "mechanics": [
+            "Tangle"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Solar Sniper Rifle precision hits scorch targets.",
+        "iconPath": "/artifact-icons/Incendiary_Rifle_Rounds_icon.png",
+        "name": "Incendiary Rifle Rounds",
+        "row": 6,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Solar"
+          ],
+          "mechanics": [
+            "Scorch"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Sniper Rifle"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Continuously damaging combatants with an Auto Rifle grants you damage resistance. |}",
+        "iconPath": "/artifact-icons/Sustained_Fire_icon.png",
+        "name": "Sustained Fire",
+        "row": 7,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Damage Resistance"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Auto Rifle"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "When you or a member of your fireteam stuns a champion, you gain energy for your least-charged ability.",
+        "iconPath": "/artifact-icons/Counter_Energy_icon.png",
+        "name": "Counter Energy",
+        "row": 1,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "Rapidly defeating combatants with a Sword refunds some ammo.",
+        "iconPath": "/artifact-icons/Blade_Stamina_icon.png",
+        "name": "Blade Stamina",
+        "row": 2,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": [
+            "Sword"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "While you have a Void or Prismatic subclass equipped, defeating weakened targets provides a small Void Overshield.",
+        "iconPath": "/artifact-icons/Void_Hegemony_icon.png",
+        "name": "Void Hegemony",
+        "row": 3,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Void",
+            "Prismatic",
+            "Mixed"
+          ],
+          "mechanics": [
+            "Weaken",
+            "Void Overshield"
+          ],
+          "subclasses": [
+            "Prismatic"
+          ],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "While you have a Solar or Prismatic subclass equipped, picking up an Orb of Power makes you radiant.",
+        "iconPath": "/artifact-icons/Radiant_Orbs_icon.png",
+        "name": "Radiant Orbs",
+        "row": 4,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Solar",
+            "Prismatic",
+            "Mixed"
+          ],
+          "mechanics": [
+            "Orb of Power",
+            "Radiant"
+          ],
+          "subclasses": [
+            "Prismatic"
+          ],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "While you have an Arc or Prismatic subclass equipped, incoming damage from combatants is reduced while amplified.",
+        "iconPath": "/artifact-icons/Galvanic_Armor_icon.png",
+        "name": "Galvanic Armor",
+        "row": 5,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Arc",
+            "Prismatic",
+            "Mixed"
+          ],
+          "mechanics": [
+            "Amplified"
+          ],
+          "subclasses": [
+            "Prismatic"
+          ],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "Your ignitions do increased damage in an increased radius.",
+        "iconPath": "/artifact-icons/Solar_Fulmination_icon.png",
+        "name": "Solar Fulmination",
+        "row": 6,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Solar"
+          ],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "While you have an Auto Rifle equipped, defeating combatants reloads your equipped weapon and temporarily increases weapon damage. Awards bonus progress when dealing final blows while surrounded. |}",
+        "iconPath": "/artifact-icons/Targeting_Autoloader_icon.png",
+        "name": "Targeting Autoloader",
+        "row": 7,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Reload"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Auto Rifle"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "When you cast your Super, each member of your fireteam with a Super type different than yours gains a bonus to weapon damage.",
+        "iconPath": "/artifact-icons/Prismatic_Transfer_icon.png",
+        "name": "Prismatic Transfer",
+        "row": 1,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Prismatic"
+          ],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "While you have Armor Charge, dealing damage with a Sword consumes an Armor Charge and empowers your Sword for a short time, granting it bonus damage and energy charge rate.",
+        "iconPath": "/artifact-icons/Argent_Blade_icon.png",
+        "name": "Argent Blade",
+        "row": 2,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Armor Charge"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Sword"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Void sources deal increased damage to weakened targets.",
+        "iconPath": "/artifact-icons/Expanding_Abyss_icon.png",
+        "name": "Expanding Abyss",
+        "row": 3,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Void"
+          ],
+          "mechanics": [
+            "Weaken"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "While you have Woven Mail, Frost Armor, or a Void Overshield, your melee recharges faster and deals increased damage. While you are amplified or radiant, your grenade recharges faster and deals increased damage.",
+        "iconPath": "/artifact-icons/Shieldcrush_icon.png",
+        "name": "Shieldcrush",
+        "row": 4,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Void"
+          ],
+          "mechanics": [
+            "Radiant",
+            "Amplified",
+            "Woven Mail",
+            "Frost Armor",
+            "Void Overshield"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Gain increased grenade and melee damage while transcendent. Weapon final blows while transcendent refund Light and Dark energy after Transcendence ends.",
+        "iconPath": "/artifact-icons/Transference_icon.png",
+        "name": "Transference",
+        "row": 5,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Sniper Rifle hits grant stacking Sniper Rifle damage, stability, and reload bonuses for a short time. Heavy ammo Sniper Rifle hits count as more than one.",
+        "iconPath": "/artifact-icons/Snipers_Meditation_icon.png",
+        "name": "Sniper's Meditation",
+        "row": 6,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Reload"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Sniper Rifle"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "When you have an Arc or Prismatic subclass equipped, Arc final blows while you are amplified summon a burst of lightning that damages and jolts targets. |}",
+        "iconPath": "/artifact-icons/Shock_and_Awe_icon.png",
+        "name": "Shock and Awe",
+        "row": 7,
+        "source": "Destiny 2 Wiki Hunter's Journal page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Arc",
+            "Prismatic",
+            "Mixed"
+          ],
+          "mechanics": [
+            "Jolt",
+            "Amplified"
+          ],
+          "subclasses": [
+            "Prismatic"
+          ],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      }
+    ],
+    "notes": "The full perk grid is sourced from the Destiny 2 Wiki artifact page and should be periodically checked against first-party archival captures.",
+    "sources": [
+      {
+        "label": "Destiny 2 Wiki Hunter's Journal page",
+        "url": "https://d2.destinygamewiki.com/wiki/Hunter%27s_Journal"
+      }
+    ],
+    "weaponFocus": [
+      "Auto Rifle",
+      "Scout Rifle",
+      "Pulse Rifle",
+      "Hand Cannon",
+      "Sidearm",
+      "SMG",
+      "Sniper Rifle",
+      "Sword",
+      "Machine Gun",
+      "Mixed"
+    ]
+  },
+  "episode-revenant": {
+    "championFocus": [
+      "Anti-Barrier",
+      "Overload",
+      "Unstoppable"
+    ],
+    "confidence": "medium",
+    "elementFocus": [
+      "Arc",
+      "Void",
+      "Stasis",
+      "Kinetic",
+      "Mixed"
+    ],
+    "mods": [
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Scout Rifles you are wielding fire shield-piercing rounds and stun Barrier Barrier Champions. Additionally, Scout Rifles are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Anti-Barrier_Scout_Rifle_icon.png",
+        "name": "Anti-Barrier Scout Rifle",
+        "row": 1,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [
+            "Anti-Barrier"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Scout Rifle"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Landing consecutive hits with any Submachine Gun you are wielding disrupts combatants, stunning them, delaying ability energy regeneration and lowering combatant damage output. Strong against Overload Overload Champions. Additionally, Submachine Guns are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Overload_Submachine_Gun_icon.png",
+        "name": "Overload Submachine Gun",
+        "row": 2,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [
+            "Overload"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "SMG",
+            "Machine Gun",
+            "Mixed"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Aiming down the sights of a Pulse Rifle for a short time loads a powerful explosive payload that stuns unshielded combatants. Strong against Unstoppable Unstoppable Champions. Additionally, Scout Rifles are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Unstoppable_Pulse_Rifle_icon.png",
+        "name": "Unstoppable Pulse Rifle",
+        "row": 3,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [
+            "Unstoppable"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Scout Rifle",
+            "Pulse Rifle",
+            "Mixed"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Shotguns you are wielding fire shield-piercing rounds and stun Barrier Barrier Champions. Additionally, Shotguns are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Anti-Barrier_Shotgun_icon.png",
+        "name": "Anti-Barrier Shotgun",
+        "row": 4,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [
+            "Anti-Barrier"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Shotgun"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "Damaging a combatant with Primary or Special ammo Grenade Launchers disrupts combatants, stunning them, delaying ability energy regeneration and lowering combatant damage output. Strong against Overload Overload Champions. Additionally, Primary and Special ammo Grenade Launchers are always overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Overload_Breechloaded_Grenade_Launcher_icon.png",
+        "name": "Overload Breechloaded Grenade Launcher",
+        "row": 5,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [
+            "Overload"
+          ],
+          "elements": [],
+          "mechanics": [
+            "Overcharged"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Grenade Launcher"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "The armor energy costs of all armor mods affecting your melee are significantly discounted.",
+        "iconPath": "/artifact-icons/Authorized_Mods_Melee_icon.png",
+        "name": "Authorized Mods: Melee",
+        "row": 6,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 1,
+        "cost": null,
+        "description": "The armor energy costs of all armor mods affecting your grenades are significantly discounted. |}",
+        "iconPath": "/artifact-icons/Authorized_Mods_Grenades_icon.png",
+        "name": "Authorized Mods: Grenades",
+        "row": 7,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "While Frost Armor is active, Stasis weapons gain increased reload speed and stability. Stasis Swords gain increased guard resistance.",
+        "iconPath": "/artifact-icons/One_with_Frost_icon.png",
+        "name": "One with Frost",
+        "row": 1,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Stasis"
+          ],
+          "mechanics": [
+            "Frost Armor",
+            "Reload"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Sword"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Rapid weapon final blows grant you a bonus to mobility. Weapon final blows with the Dark Ether Reaper origin trait count as more than one.",
+        "iconPath": "/artifact-icons/Killing_Breeze_icon.png",
+        "name": "Killing Breeze",
+        "row": 2,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Origin Trait"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Dark Ether Reaper origin trait has a chance to spawn an extra Dark Ether charge. Weapons with the Dark Ether Reaper origin trait are overcharged when that modifier is active.",
+        "iconPath": "/artifact-icons/Enhanced_Ether_Generator_icon.png",
+        "name": "Enhanced Ether Generator",
+        "row": 3,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Overcharged",
+            "Origin Trait"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Deal increased weapon damage to Scorn. Wearing Shadestalker Armor increases the bonus damage.",
+        "iconPath": "/artifact-icons/Fell_the_Revenant_icon.png",
+        "name": "Fell the Revenant",
+        "row": 4,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Dealing damage with a Grenade Launcher temporarily increases the reload speed of Grenade Launchers.",
+        "iconPath": "/artifact-icons/Rapid_Impacts_icon.png",
+        "name": "Rapid Impacts",
+        "row": 5,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Reload"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Grenade Launcher"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Emergency Reinforcements consume all but 1 Armor Charge.",
+        "iconPath": "/artifact-icons/Emergency_Flare_icon.png",
+        "name": "Emergency Flare",
+        "row": 6,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Armor Charge"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 2,
+        "cost": null,
+        "description": "Rapid final blows while Devour is active grant a bonus to reload and handling. |}",
+        "iconPath": "/artifact-icons/Frenzied_Hunger_icon.png",
+        "name": "Frenzied Hunger",
+        "row": 7,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Devour",
+            "Reload"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Rapid Stasis weapon precision hits grant you a stack of Frost Armor. Rapid precision hits from weapons with the Dark Ether Reaper origin trait grant you more stacks of Frost Armor. BOOST: Dealing Stasis weapon damage to slowed targets has a chance to spawn a Stasis shard.",
+        "iconPath": "/artifact-icons/Wind_Chill_icon.png",
+        "name": "Wind Chill",
+        "row": 1,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Stasis"
+          ],
+          "mechanics": [
+            "Frost Armor",
+            "Slow",
+            "Origin Trait"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Gather Stasis Shards to gain stacks of Crystalline Converter. Your next powered Stasis melee hit creates Stasis crystals equal to the number of stacks you have. BOOST: Stasis weapon final blows after activating your class ability spawn a Stasis shard.",
+        "iconPath": "/artifact-icons/Crystalline_Converter_icon.png",
+        "name": "Crystalline Converter",
+        "row": 2,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Stasis"
+          ],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "After finishing a powerful combatant, gain temporary damage resistance. While you have two or more Shadestalker armor pieces equipped, after finishing a powerful combatant, gain increased temporary damage resistance and replenish health.",
+        "iconPath": "/artifact-icons/Total_Carnage_icon.png",
+        "name": "Total Carnage",
+        "row": 3,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Damage Resistance",
+            "Heal"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Rapid final blows against weakened combatants grants you Devour. BOOST: Rapidly defeating weakened combatants spawns a Void Breach.",
+        "iconPath": "/artifact-icons/Power_from_Pain_icon.png",
+        "name": "Power from Pain",
+        "row": 4,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Void"
+          ],
+          "mechanics": [
+            "Weaken",
+            "Devour"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Rapid precision hits or rapid final blows on targets affected by jolt or blind will generate Ionic Traces. BOOST: Picking up an Ionic Trace grants an Armor Charge.",
+        "iconPath": "/artifact-icons/Trace_Evidence_icon.png",
+        "name": "Trace Evidence",
+        "row": 5,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Armor Charge",
+            "Jolt",
+            "Blind"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Rapid final blows, while surrounded, grant you Armor Charge. BOOST: While you are surrounded, your weapons have increased handling. Swords gain increased charge rate.",
+        "iconPath": "/artifact-icons/The_Thick_of_It_icon.png",
+        "name": "The Thick of It",
+        "row": 6,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Armor Charge"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Sword"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 3,
+        "cost": null,
+        "description": "Picking up Special or Heavy ammo grants a chance to receive an Armor Charge. Heavy ammo grants a greater chance. |}",
+        "iconPath": "/artifact-icons/Finders_Keepers_icon.png",
+        "name": "Finders Keepers",
+        "row": 7,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Armor Charge"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "While Frost Armor is active, taking critical damage from combatants causes you to emit a freezing burst. BOOST: Increase radius and strength of this freezing burst.",
+        "iconPath": "/artifact-icons/Armor_of_Eramis_icon.png",
+        "name": "Armor of Eramis",
+        "row": 1,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Frost Armor"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "Shattering Stasis crystals releases shards of ice that damage and slow targets. BOOST: Shattering frozen targets and Stasis crystals deals increased damage.",
+        "iconPath": "/artifact-icons/Crystalized_Auto_Loader_icon.png",
+        "name": "Crystalized Auto Loader",
+        "row": 2,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Stasis"
+          ],
+          "mechanics": [
+            "Slow"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "Finishers emit a damaging wave that matches the element of your currently equipped Super. BOOST: While you have an Arc, Void or Stasis Super equipped, the blast also applies Blind, Weaken, and Slow, respectively.",
+        "iconPath": "/artifact-icons/Debilitating_Wave_icon.png",
+        "name": "Debilitating Wave",
+        "row": 3,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Arc",
+            "Void",
+            "Stasis",
+            "Mixed"
+          ],
+          "mechanics": [
+            "Blind",
+            "Weaken",
+            "Slow",
+            "Finisher"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "Using a Grenade Launcher to damage a boss, damage a Champion, or break a combatant's shield weakens them. BOOST: Using Grenade Launchers to damage bosses, Champions, or to break combatants’ shields automatically reloads stowed weapons.",
+        "iconPath": "/artifact-icons/Concussive_Reload_icon.png",
+        "name": "Concussive Reload",
+        "row": 4,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Weaken",
+            "Reload"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Grenade Launcher"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "Rapid Arc weapon precision hits consume an Armor Charge to blind the target. BOOST: Blinding a target this way instead emits a blinding burst.",
+        "iconPath": "/artifact-icons/Retinal_Burn_icon.png",
+        "name": "Retinal Burn",
+        "row": 5,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Arc"
+          ],
+          "mechanics": [
+            "Armor Charge",
+            "Blind"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "The first time you break a target’s shield or break the shield of a Guardian using their Super, you create an Orb of Power. BOOST: Picking up an Orb of Power, an Elemental pickup, or a Tangle grants you a small amount of health.",
+        "iconPath": "/artifact-icons/Curative_Orbs_icon.png",
+        "name": "Curative Orbs",
+        "row": 6,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Orb of Power",
+            "Tangle",
+            "Elemental Pickup",
+            "Heal"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 4,
+        "cost": null,
+        "description": "While Devour is active, Void weapon final blows have a chance to generate a Void Breach. BOOST: Picking up a Void Breach reloads Shotguns and Grenade Launchers. |}",
+        "iconPath": "/artifact-icons/Void_Renewal_icon.png",
+        "name": "Void Renewal",
+        "row": 7,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Void"
+          ],
+          "mechanics": [
+            "Devour",
+            "Reload"
+          ],
+          "subclasses": [],
+          "weapons": [
+            "Shotgun",
+            "Grenade Launcher",
+            "Mixed"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Frozen combatants become surrounded by chilling fog, which slows combatants that aren't already. Weapons with the Dark Ether Reaper origin trait deal more damage to frozen combatants.",
+        "iconPath": "/artifact-icons/Brain_Freeze_icon.png",
+        "name": "Brain Freeze",
+        "row": 1,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [],
+          "mechanics": [
+            "Freeze",
+            "Slow",
+            "Origin Trait"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Picking up a Void Breach causes your next source of Void damage to create a large weakening pulse.",
+        "iconPath": "/artifact-icons/Supernova_icon.png",
+        "name": "Supernova",
+        "row": 2,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Void"
+          ],
+          "mechanics": [
+            "Weaken"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Your Arc abilities, Void abilities, and weapons with the Dark Ether Reaper origin trait do bonus damage to targets that are affected by a Stasis debuff. BOOST: Increase bonus damage to combatants affected by a Stasis debuff.",
+        "iconPath": "/artifact-icons/Conductive_Cosmic_Crystal_icon.png",
+        "name": "Conductive Cosmic Crystal",
+        "row": 3,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Arc",
+            "Void",
+            "Stasis",
+            "Mixed"
+          ],
+          "mechanics": [
+            "Origin Trait"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Picking up a Stasis Shard grants you class ability energy. Picking up a Void Breach grants you melee energy.",
+        "iconPath": "/artifact-icons/Served_Cold_icon.png",
+        "name": "Served Cold",
+        "row": 4,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Void",
+            "Stasis",
+            "Mixed"
+          ],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Sustained damage with a Power Grenade Launcher causes the combatant to emit a shockwave that damages nearby combatants. This shockwave can stun Unstoppable Unstoppable Champions.",
+        "iconPath": "/artifact-icons/Kinetic_Impacts_icon.png",
+        "name": "Kinetic Impacts",
+        "row": 5,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [
+            "Unstoppable"
+          ],
+          "elements": [
+            "Kinetic"
+          ],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": [
+            "Grenade Launcher"
+          ]
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "Arc sources deal increased damage to Blind targets.",
+        "iconPath": "/artifact-icons/Arc_Compounding_icon.png",
+        "name": "Arc Compounding",
+        "row": 6,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Arc"
+          ],
+          "mechanics": [
+            "Blind"
+          ],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      },
+      {
+        "column": 5,
+        "cost": null,
+        "description": "After picking up a Void Breach, dealing damage with a Void weapon creates a rain of seeking projectiles. BOOST: Create more seeking projectiles on final blows. |}",
+        "iconPath": "/artifact-icons/Old_God_s_Rite_icon.png",
+        "name": "Old God's Rite",
+        "row": 7,
+        "source": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "tags": {
+          "champions": [],
+          "elements": [
+            "Void"
+          ],
+          "mechanics": [],
+          "subclasses": [],
+          "weapons": []
+        },
+        "type": "Artifact Perk"
+      }
+    ],
+    "notes": "The full perk grid is sourced from the Destiny 2 Wiki artifact page and should be periodically checked against first-party archival captures.",
+    "sources": [
+      {
+        "label": "Destiny 2 Wiki Slayer Baron Apothecary Satchel page",
+        "url": "https://d2.destinygamewiki.com/wiki/Slayer_Baron_Apothecary_Satchel"
+      }
+    ],
+    "weaponFocus": [
+      "Scout Rifle",
+      "Pulse Rifle",
+      "SMG",
+      "Shotgun",
+      "Grenade Launcher",
+      "Sword",
+      "Machine Gun",
+      "Mixed"
+    ]
+  },
   "episode-heresy": {
     "championFocus": [
       "Anti-Barrier",
@@ -8768,7 +10339,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Glaives you wield fire a powerful explosive payload that stuns unshielded combatants. Strong against Unstoppable Unstoppable Champions. Additionally, Glaives are always overcharged when the modifier is active.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Unstoppable_Glaive_icon.png",
         "name": "Unstoppable Glaive",
         "row": 5,
         "source": "Destiny 2 Wiki Tablet of Ruin page",
@@ -9132,7 +10703,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "Defeating powerful combatants with your finisher spawns Special ammo for you and your allies; defeated Subjugators, Tormentors, or Champions spawn more ammo.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Dreadful_Finisher_icon.png",
         "name": "Dreadful Finisher",
         "row": 1,
         "source": "Destiny 2 Wiki Tablet of Ruin page",
@@ -9330,7 +10901,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Stunning a Champion grants maximum stacks of Bolt Charge. Triggers an Arc bolt that heals you and jolts combatants that it damages.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Defilbrillating_Blast_icon.png",
         "name": "Defilbrillating Blast",
         "row": 4,
         "source": "Destiny 2 Wiki Tablet of Ruin page",
@@ -9375,7 +10946,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Casting a Super while you are critically wounded or have a elemental buff matching your Super element grants a period of increased Super damage.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Limiting_Break_icon.png",
         "name": "Limiting Break",
         "row": 6,
         "source": "Destiny 2 Wiki Tablet of Ruin page",
@@ -9392,7 +10963,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Dealing sustained damage to severed targets unravels them. Defeating a severed target creates a hotspot of Strand energy, granting Woven Mail to nearby allies for a short duration. BOOST: Unravelling projectiles deal increased damage. These deal further increased damage to severed targets. |}",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/To_Shreds_icon.png",
         "name": "To Shreds",
         "row": 7,
         "source": "Destiny 2 Wiki Tablet of Ruin page",
@@ -9449,7 +11020,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Your equipped Hand Cannons fire shield-piercing rounds and stun Barrier Barrier Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Anti-Barrier_Hand_Cannon_icon.png",
         "name": "Anti-Barrier Hand Cannon",
         "row": 1,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9470,7 +11041,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Your equipped Sniper Rifles fire shield-piercing rounds and stun Barrier Barrier Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Anti-Barrier_Sniper_Rifle_Icon.png",
         "name": "Anti-Barrier Sniper Rifle",
         "row": 2,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9491,7 +11062,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Your equipped Pulse Rifles fire disrupting rounds which stun the target, delaying ability energy regeneration and lowering combatant damage output. Strong against Overload Overload Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Overload_Pulse_Rifle_icon.png",
         "name": "Overload Pulse Rifle",
         "row": 3,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9512,7 +11083,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Your equipped Submachine Guns fire disrupting rounds which stun the target, delaying ability energy regeneration and lowering combatant damage output. Strong against Overload Overload Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Overload_Submachine_Gun_Icon.png",
         "name": "Overload Submachine Gun",
         "row": 4,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9535,7 +11106,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 1,
         "cost": null,
         "description": "Crossbows, and Bows that have been fully drawn for a short time, fire a powerful explosive payload that stuns unshielded combatants. Strong against Unstoppable Unstoppable Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Unstoppable_Bow_icon.png",
         "name": "Unstoppable Bow",
         "row": 5,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9556,7 +11127,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 2,
         "cost": null,
         "description": "Grants access to the Helmet mods: Kinetic/Void Siphon and Kinetic/Arc Siphon. These mods combine two elemental siphons at a discounted cost.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Impact__Shock__Gravity_icon.png",
         "name": "Impact, Shock, Gravity",
         "row": 1,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9578,7 +11149,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 2,
         "cost": null,
         "description": "While you have an Arc or Void Super equipped, increase the maximum number of stacks of Armor Charge you can carry by 1.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Gravitic-Voltaic_Charge_icon.png",
         "name": "Gravitic-Voltaic Charge",
         "row": 2,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9601,7 +11172,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 2,
         "cost": null,
         "description": "Weapon final blows grant a stacking bonus to stability which resets on weapon reload or stow. Swords gain Guard Resistance.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Expert_Handling_icon.png",
         "name": "Expert Handling",
         "row": 3,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9622,7 +11193,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 2,
         "cost": null,
         "description": "If the first shot shortly after reloading or readying your weapon is a precision hit, gain flinch resistance.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Fastest_Draw_icon.png",
         "name": "Fastest Draw",
         "row": 4,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9641,7 +11212,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 2,
         "cost": null,
         "description": "Rapid final blows with a Kinetic weapon or a weapon matching your equipped Super create an elemental pickup that matches your equipped Super.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Elemental_Siphon_icon.png",
         "name": "Elemental Siphon",
         "row": 5,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9662,7 +11233,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 3,
         "cost": null,
         "description": "Breaking a combatant's shield grants increased weapon stability, handling, and reload speed. Swords gain increased guard resistance.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Press_The_Advantage_icon.png",
         "name": "Press The Advantage",
         "row": 1,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9683,7 +11254,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 3,
         "cost": null,
         "description": "Sustained Kinetic weapon damage and rapid final blows have a chance to generate a unique ammo brick. Collecting this brick will grant ammo to equipped Kinetic damage weapons and grant Special and Heavy ammo progress.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Kinetic_Synthesis_icon.png",
         "name": "Kinetic Synthesis",
         "row": 2,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9702,7 +11273,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 3,
         "cost": null,
         "description": "Precision hits with Bows and Sniper Rifles grant a stacking bonus to their reload speed.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Reload_at_Range_icon.png",
         "name": "Reload at Range",
         "row": 3,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9725,7 +11296,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 3,
         "cost": null,
         "description": "Shortly after guarding with a Sword, your light and heavy attacks stun unshielded combatants. Strong against Unstoppable Unstoppable Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Riposte_icon.png",
         "name": "Riposte",
         "row": 4,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9746,7 +11317,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 3,
         "cost": null,
         "description": "Rapid final blows against weakened combatants grant you Devour.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Power_from_Pain_icon.png",
         "name": "Power from Pain",
         "row": 5,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9766,7 +11337,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "Defeating Arc Arc debuffed targets grants Bolt Charge. Rapidly defeating Arc debuffed targets spawns an Orb of Power and heals a small portion of health.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Dielectric_icon.png",
         "name": "Dielectric",
         "row": 1,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9789,7 +11360,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "Breaking a combatant's shield temporarily grants you damage resistance and increased melee damage.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Armorsmith_icon.png",
         "name": "Armorsmith",
         "row": 2,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9808,7 +11379,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "When you or a member of your fireteam stuns a champion, you gain energy for your least-charged ability.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Counter_Energy_icon.png",
         "name": "Counter Energy",
         "row": 3,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9825,7 +11396,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "Briefly pause after executing a light attack, then follow it up with a light or heavy attack to empower your Sword for a short time, granting it bonus damage and charge rate.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Combination_Argent_Blade_icon.png",
         "name": "Combination Argent Blade",
         "row": 4,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9844,7 +11415,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 4,
         "cost": null,
         "description": "While you have a Void elemental buff, melee and Sword hits weaken targets, while melee and Sword final blows create a weakening burst.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Singularity_Blade_icon.png",
         "name": "Singularity Blade",
         "row": 5,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9867,7 +11438,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Arc Arc weapon final blows have a chance to spawn an Arc Elemental Orb. Arc Orbs can be thrown or shot to create an Arc explosion that jolts targets it damages.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Elemental_Orbs_Arc_icon.png",
         "name": "Elemental Orbs: Arc",
         "row": 1,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9889,7 +11460,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Kinetic weapon damage against a powerful combatant has a chance to create a Kinetic Rupture. Targeting this Rupture causes a damaging explosion that staggers combatants. Strong against Unstoppable Unstoppable Champions.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Kinetic_Rupture_icon.png",
         "name": "Kinetic Rupture",
         "row": 2,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9910,7 +11481,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Sniper Rifle hits grant stacking Sniper Rifle damage, stability, and reload bonuses for a short time. Heavy ammo Sniper Rifle hits count as more than one hit.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Snipers_Meditation_icon.png",
         "name": "Sniper's Meditation",
         "row": 3,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9931,7 +11502,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Performing three Sword light attacks followed by a heavy attack summons penumbral blades that surround you to damage and disorient combatants. Sword final blows extend the duration of these penumbral blades.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Sword_Storm_Combo_icon.png",
         "name": "Sword Storm Combo",
         "row": 4,
         "source": "Destinypedia Encrypted Data Disk page",
@@ -9950,7 +11521,7 @@ export const WIKI_ARTIFACT_OVERRIDES: Record<string, ArtifactOverride> = {
         "column": 5,
         "cost": null,
         "description": "Defeating a weakened target spawns a tracking projectile that weakens other targets.",
-        "iconPath": null,
+        "iconPath": "/artifact-icons/Void_Infestation_icon.png",
         "name": "Void Infestation",
         "row": 5,
         "source": "Destinypedia Encrypted Data Disk page",

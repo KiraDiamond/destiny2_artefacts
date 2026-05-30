@@ -1,0 +1,778 @@
+{
+  "classes": [
+    {
+      "key": "titan",
+      "name": "Titan",
+      "type": "class",
+      "hash": 76170706,
+      "icon": "/common/destiny2_content/icons/46a19ddd00d0f6ca822230943103b54a.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/46a19ddd00d0f6ca822230943103b54a.png"
+    },
+    {
+      "key": "hunter",
+      "name": "Hunter",
+      "type": "class",
+      "hash": 278453589,
+      "icon": "/common/destiny2_content/icons/05e32a388d9a65a0ef59b2193eee2db4.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/05e32a388d9a65a0ef59b2193eee2db4.png"
+    },
+    {
+      "key": "warlock",
+      "name": "Warlock",
+      "type": "class",
+      "hash": 1273297,
+      "icon": "/common/destiny2_content/icons/e4006d9a8fe167bd7e83193d7601c89a.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/e4006d9a8fe167bd7e83193d7601c89a.png"
+    }
+  ],
+  "elements": [
+    {
+      "key": "kinetic",
+      "name": "Kinetic",
+      "type": "damageType",
+      "hash": 3373582085,
+      "icon": "/common/destiny2_content/icons/DestinyDamageTypeDefinition_3385a924fd3ccb92c343ade19f19a370.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinyDamageTypeDefinition_3385a924fd3ccb92c343ade19f19a370.png"
+    },
+    {
+      "key": "arc",
+      "name": "Arc",
+      "type": "damageType",
+      "hash": 2303181850,
+      "icon": "/common/destiny2_content/icons/DestinyDamageTypeDefinition_092d066688b879c807c3b460afdd61e6.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinyDamageTypeDefinition_092d066688b879c807c3b460afdd61e6.png"
+    },
+    {
+      "key": "solar",
+      "name": "Solar",
+      "type": "damageType",
+      "hash": 1847026933,
+      "icon": "/common/destiny2_content/icons/DestinyDamageTypeDefinition_2a1773e10968f2d088b97c22b22bba9e.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinyDamageTypeDefinition_2a1773e10968f2d088b97c22b22bba9e.png"
+    },
+    {
+      "key": "void",
+      "name": "Void",
+      "type": "damageType",
+      "hash": 3454344768,
+      "icon": "/common/destiny2_content/icons/DestinyDamageTypeDefinition_ceb2f6197dccf3958bb31cc783eb97a0.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinyDamageTypeDefinition_ceb2f6197dccf3958bb31cc783eb97a0.png"
+    },
+    {
+      "key": "stasis",
+      "name": "Stasis",
+      "type": "damageType",
+      "hash": 151347233,
+      "icon": "/common/destiny2_content/icons/DestinyDamageTypeDefinition_530c4c3e7981dc2aefd24fd3293482bf.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinyDamageTypeDefinition_530c4c3e7981dc2aefd24fd3293482bf.png"
+    },
+    {
+      "key": "strand",
+      "name": "Strand",
+      "type": "damageType",
+      "hash": 3949783978,
+      "icon": "/common/destiny2_content/icons/DestinyDamageTypeDefinition_b2fe51a94f3533f97079dfa0d27a4096.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinyDamageTypeDefinition_b2fe51a94f3533f97079dfa0d27a4096.png"
+    },
+    {
+      "key": "prismatic",
+      "name": "Prismatic",
+      "type": "subclassElement",
+      "hash": 571267712,
+      "icon": "/common/destiny2_content/icons/ea46e3015259c7bc0d98020eb1889c2a.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/ea46e3015259c7bc0d98020eb1889c2a.png"
+    }
+  ],
+  "subclasses": [
+    {
+      "key": "titan_striker",
+      "className": "Titan",
+      "element": "Arc",
+      "name": "Striker",
+      "type": "subclass",
+      "hash": 2076274495,
+      "icon": "/common/destiny2_content/icons/3edffdd2c51f29ad3798413586c3775d.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/3edffdd2c51f29ad3798413586c3775d.jpg"
+    },
+    {
+      "key": "titan_sunbreaker",
+      "className": "Titan",
+      "element": "Solar",
+      "name": "Sunbreaker",
+      "type": "subclass",
+      "hash": 2273211710,
+      "icon": "/common/destiny2_content/icons/ffda820bb6af8d69af6fdfdf229744f4.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/ffda820bb6af8d69af6fdfdf229744f4.jpg"
+    },
+    {
+      "key": "titan_sentinel",
+      "className": "Titan",
+      "element": "Void",
+      "name": "Sentinel",
+      "type": "subclass",
+      "hash": 2842471112,
+      "icon": "/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png"
+    },
+    {
+      "key": "titan_behemoth",
+      "className": "Titan",
+      "element": "Stasis",
+      "name": "Behemoth",
+      "type": "subclass",
+      "hash": 613647804,
+      "icon": "/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png"
+    },
+    {
+      "key": "titan_berserker",
+      "className": "Titan",
+      "element": "Strand",
+      "name": "Berserker",
+      "type": "subclass",
+      "hash": 242419885,
+      "icon": "/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png"
+    },
+    {
+      "key": "titan_prismatic",
+      "className": "Titan",
+      "element": "Prismatic",
+      "name": "Prismatic Titan",
+      "type": "subclass",
+      "hash": 1616346845,
+      "icon": "/common/destiny2_content/icons/c1740d829e62afc40a9e57af4e3cad4c.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/c1740d829e62afc40a9e57af4e3cad4c.png"
+    },
+    {
+      "key": "hunter_arcstrider",
+      "className": "Hunter",
+      "element": "Arc",
+      "name": "Arcstrider",
+      "type": "subclass",
+      "hash": 1334959255,
+      "icon": "/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png"
+    },
+    {
+      "key": "hunter_gunslinger",
+      "className": "Hunter",
+      "element": "Solar",
+      "name": "Gunslinger",
+      "type": "subclass",
+      "hash": 2240888816,
+      "icon": "/common/destiny2_content/icons/fedcb91b7ab0584c12f0e9fec730702b.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/fedcb91b7ab0584c12f0e9fec730702b.png"
+    },
+    {
+      "key": "hunter_nightstalker",
+      "className": "Hunter",
+      "element": "Void",
+      "name": "Nightstalker",
+      "type": "subclass",
+      "hash": 37263815,
+      "icon": "/common/destiny2_content/icons/e9d7d8cfe2d079fc7ccc38b7df8fa537.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/e9d7d8cfe2d079fc7ccc38b7df8fa537.jpg"
+    },
+    {
+      "key": "hunter_revenant",
+      "className": "Hunter",
+      "element": "Stasis",
+      "name": "Revenant",
+      "type": "subclass",
+      "hash": 873720784,
+      "icon": "/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png"
+    },
+    {
+      "key": "hunter_threadrunner",
+      "className": "Hunter",
+      "element": "Strand",
+      "name": "Threadrunner",
+      "type": "subclass",
+      "hash": 3785442599,
+      "icon": "/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png"
+    },
+    {
+      "key": "hunter_prismatic",
+      "className": "Hunter",
+      "element": "Prismatic",
+      "name": "Prismatic Hunter",
+      "type": "subclass",
+      "hash": 4227925815,
+      "icon": "/common/destiny2_content/icons/fab506e62fa4f188bfe2fb6d56b39614.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/fab506e62fa4f188bfe2fb6d56b39614.png"
+    },
+    {
+      "key": "warlock_stormcaller",
+      "className": "Warlock",
+      "element": "Arc",
+      "name": "Stormcaller",
+      "type": "subclass",
+      "hash": 1204459690,
+      "icon": "/common/destiny2_content/icons/8d4128f4885f8ce1ed4984d9c07f8599.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/8d4128f4885f8ce1ed4984d9c07f8599.jpg"
+    },
+    {
+      "key": "warlock_dawnblade",
+      "className": "Warlock",
+      "element": "Solar",
+      "name": "Dawnblade",
+      "type": "subclass",
+      "hash": 1536294536,
+      "icon": "/common/destiny2_content/icons/f9cabe538a01a42d56a9e3a87a431749.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/f9cabe538a01a42d56a9e3a87a431749.png"
+    },
+    {
+      "key": "warlock_voidwalker",
+      "className": "Warlock",
+      "element": "Void",
+      "name": "Voidwalker",
+      "type": "subclass",
+      "hash": 412048979,
+      "icon": "/common/destiny2_content/icons/683cd0a3aa2e0a526955f5decfb45394.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/683cd0a3aa2e0a526955f5decfb45394.png"
+    },
+    {
+      "key": "warlock_shadebinder",
+      "className": "Warlock",
+      "element": "Stasis",
+      "name": "Shadebinder",
+      "type": "subclass",
+      "hash": 37525613,
+      "icon": "/common/destiny2_content/icons/89d03e818f7451a735ab876c8eb1755d.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/89d03e818f7451a735ab876c8eb1755d.jpg"
+    },
+    {
+      "key": "warlock_broodweaver",
+      "className": "Warlock",
+      "element": "Strand",
+      "name": "Broodweaver",
+      "type": "subclass",
+      "hash": 4204413574,
+      "icon": "/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png"
+    },
+    {
+      "key": "warlock_prismatic",
+      "className": "Warlock",
+      "element": "Prismatic",
+      "name": "Prismatic Warlock",
+      "type": "subclass",
+      "hash": 3357128662,
+      "icon": "/common/destiny2_content/icons/652406349e99e3db0c3198f78af4eeae.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/652406349e99e3db0c3198f78af4eeae.png"
+    }
+  ],
+  "weaponTypes": [
+    {
+      "key": "auto_rifle",
+      "name": "Auto Rifle",
+      "type": "weaponType",
+      "hash": 2363653,
+      "icon": "/common/destiny2_content/icons/0acb679cc0b502e4daea0321c9d76a1a.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/0acb679cc0b502e4daea0321c9d76a1a.jpg"
+    },
+    {
+      "key": "pulse_rifle",
+      "name": "Pulse Rifle",
+      "type": "weaponType",
+      "hash": 877384,
+      "icon": "/common/destiny2_content/icons/213baa2260d6cd424f47992ba8980596.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/213baa2260d6cd424f47992ba8980596.jpg"
+    },
+    {
+      "key": "scout_rifle",
+      "name": "Scout Rifle",
+      "type": "weaponType",
+      "hash": 8293111,
+      "icon": "/common/destiny2_content/icons/dd86f6bfb4f566edad870e9f6c5dc687.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/dd86f6bfb4f566edad870e9f6c5dc687.jpg"
+    },
+    {
+      "key": "hand_cannon",
+      "name": "Hand Cannon",
+      "type": "weaponType",
+      "hash": 6857689,
+      "icon": "/common/destiny2_content/icons/7dd2e364430e90a4b74a15a75843f602.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/7dd2e364430e90a4b74a15a75843f602.jpg"
+    },
+    {
+      "key": "sidearm",
+      "name": "Sidearm",
+      "type": "weaponType",
+      "hash": 1080125,
+      "icon": "/common/destiny2_content/icons/a21c38a2e55d4e1ffb1c77751e2fe580.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/a21c38a2e55d4e1ffb1c77751e2fe580.jpg"
+    },
+    {
+      "key": "submachine_gun",
+      "name": "Submachine Gun",
+      "type": "weaponType",
+      "hash": 32287609,
+      "icon": "/common/destiny2_content/icons/53e8fc2b82914d2d75c46b4e594ca4d4.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/53e8fc2b82914d2d75c46b4e594ca4d4.jpg"
+    },
+    {
+      "key": "combat_bow",
+      "name": "Combat Bow",
+      "type": "weaponType",
+      "hash": 24639057,
+      "icon": "/common/destiny2_content/icons/adbd4c3544c36a8c94e976bbb806095d.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/adbd4c3544c36a8c94e976bbb806095d.jpg"
+    },
+    {
+      "key": "shotgun",
+      "name": "Shotgun",
+      "type": "weaponType",
+      "hash": 2307365,
+      "icon": "/common/destiny2_content/icons/73e0c15a5fad37b9033cc43984c975c8.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/73e0c15a5fad37b9033cc43984c975c8.jpg"
+    },
+    {
+      "key": "sniper_rifle",
+      "name": "Sniper Rifle",
+      "type": "weaponType",
+      "hash": 11400735,
+      "icon": "/common/destiny2_content/icons/419076027986440657e61c49c5bdcf8d.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/419076027986440657e61c49c5bdcf8d.jpg"
+    },
+    {
+      "key": "fusion_rifle",
+      "name": "Fusion Rifle",
+      "type": "weaponType",
+      "hash": 2290416,
+      "icon": "/common/destiny2_content/icons/17844da726a3c08b64d635045fa22012.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/17844da726a3c08b64d635045fa22012.jpg"
+    },
+    {
+      "key": "trace_rifle",
+      "name": "Trace Rifle",
+      "type": "weaponType",
+      "hash": 19024058,
+      "icon": "/common/destiny2_content/icons/76817c6b9ad482a19a180819fbe85def.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/76817c6b9ad482a19a180819fbe85def.jpg"
+    },
+    {
+      "key": "glaive",
+      "name": "Glaive",
+      "type": "weaponType",
+      "hash": 14194600,
+      "icon": "/common/destiny2_content/icons/beec2a35b2cffd3fac488e0fb8cf25a5.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/beec2a35b2cffd3fac488e0fb8cf25a5.jpg"
+    },
+    {
+      "key": "grenade_launcher",
+      "name": "Grenade Launcher",
+      "type": "weaponType",
+      "hash": 40394833,
+      "icon": "/common/destiny2_content/icons/b6624ac9c56f8d583f7b1951f29815e4.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/b6624ac9c56f8d583f7b1951f29815e4.jpg"
+    },
+    {
+      "key": "rocket_launcher",
+      "name": "Rocket Launcher",
+      "type": "weaponType",
+      "hash": 944883,
+      "icon": "/common/destiny2_content/icons/c69a4ade8774e3ef876530fdf49fc0c4.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/c69a4ade8774e3ef876530fdf49fc0c4.jpg"
+    },
+    {
+      "key": "linear_fusion_rifle",
+      "name": "Linear Fusion Rifle",
+      "type": "weaponType",
+      "hash": 173152368,
+      "icon": "/common/destiny2_content/icons/e3286429c9a7a058680c65f3d83280a6.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/e3286429c9a7a058680c65f3d83280a6.jpg"
+    },
+    {
+      "key": "machine_gun",
+      "name": "Machine Gun",
+      "type": "weaponType",
+      "hash": 47772649,
+      "icon": "/common/destiny2_content/icons/a48b473b5fd1bede8fa23d038ec24732.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/a48b473b5fd1bede8fa23d038ec24732.jpg"
+    },
+    {
+      "key": "sword",
+      "name": "Sword",
+      "type": "weaponType",
+      "hash": 35794111,
+      "icon": "/common/destiny2_content/icons/98230117d6f5b26b013956e8c47fe606.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/98230117d6f5b26b013956e8c47fe606.jpg"
+    }
+  ],
+  "seasons": [
+    {
+      "key": "season_01_red_war",
+      "number": 1,
+      "name": "The Red War",
+      "year": 1,
+      "hash": null,
+      "icon": null,
+      "iconUrl": null
+    },
+    {
+      "key": "season_02_curse_of_osiris",
+      "number": 2,
+      "name": "Curse of Osiris",
+      "year": 1,
+      "hash": 1331476689,
+      "icon": "/common/destiny2_content/icons/dceaa9ac660f0d20996d8e5ed47b795e.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/dceaa9ac660f0d20996d8e5ed47b795e.png"
+    },
+    {
+      "key": "season_03_warmind",
+      "number": 3,
+      "name": "Warmind",
+      "year": 1,
+      "hash": 1331476689,
+      "icon": "/common/destiny2_content/icons/dceaa9ac660f0d20996d8e5ed47b795e.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/dceaa9ac660f0d20996d8e5ed47b795e.png"
+    },
+    {
+      "key": "season_04_outlaw",
+      "number": 4,
+      "name": "Season of the Outlaw",
+      "year": 2,
+      "hash": null,
+      "icon": null,
+      "iconUrl": null
+    },
+    {
+      "key": "season_05_forge",
+      "number": 5,
+      "name": "Season of the Forge",
+      "year": 2,
+      "hash": null,
+      "icon": null,
+      "iconUrl": null
+    },
+    {
+      "key": "season_06_drifter",
+      "number": 6,
+      "name": "Season of the Drifter",
+      "year": 2,
+      "hash": null,
+      "icon": null,
+      "iconUrl": null
+    },
+    {
+      "key": "season_07_opulence",
+      "number": 7,
+      "name": "Season of Opulence",
+      "year": 2,
+      "hash": 2759158924,
+      "icon": "/common/destiny2_content/icons/d4c4ef5ba6373c8db2d81c8d7b42bf4a.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/d4c4ef5ba6373c8db2d81c8d7b42bf4a.png"
+    },
+    {
+      "key": "season_08_undying",
+      "number": 8,
+      "name": "Season of the Undying",
+      "year": 3,
+      "hash": 1743682818,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_b45d3d6ae817684a98d69aa44fc8ce58.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_b45d3d6ae817684a98d69aa44fc8ce58.png"
+    },
+    {
+      "key": "season_09_dawn",
+      "number": 9,
+      "name": "Season of Dawn",
+      "year": 3,
+      "hash": 1743682819,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_b5a0daa606e06eb6ec2bca66c7572a26.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_b5a0daa606e06eb6ec2bca66c7572a26.png"
+    },
+    {
+      "key": "season_10_worthy",
+      "number": 10,
+      "name": "Season of the Worthy",
+      "year": 3,
+      "hash": 1951982821,
+      "icon": "/common/destiny2_content/icons/7ab52135c392a8c6d198c660d4abcd02.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/7ab52135c392a8c6d198c660d4abcd02.png"
+    },
+    {
+      "key": "season_11_arrivals",
+      "number": 11,
+      "name": "Season of Arrivals",
+      "year": 3,
+      "hash": 2809059424,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_97331ffcc89a51d8032b1e655546c218.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_97331ffcc89a51d8032b1e655546c218.png"
+    },
+    {
+      "key": "season_12_hunt",
+      "number": 12,
+      "name": "Season of the Hunt",
+      "year": 4,
+      "hash": 2809059427,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_a12fd678d5e2b9d614af4e02e43fbd5b.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_a12fd678d5e2b9d614af4e02e43fbd5b.png"
+    },
+    {
+      "key": "season_13_chosen",
+      "number": 13,
+      "name": "Season of the Chosen",
+      "year": 4,
+      "hash": 2809059426,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_d1eb59faf9fb654af3735c710f6e374a.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_d1eb59faf9fb654af3735c710f6e374a.png"
+    },
+    {
+      "key": "season_14_splicer",
+      "number": 14,
+      "name": "Season of the Splicer",
+      "year": 4,
+      "hash": 2809059429,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_471b4cef2f4c007d2a4ac33a02355054.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_471b4cef2f4c007d2a4ac33a02355054.png"
+    },
+    {
+      "key": "season_15_lost",
+      "number": 15,
+      "name": "Season of the Lost",
+      "year": 4,
+      "hash": 2809059428,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_265abf1e776ea726de1f1459392727b6.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_265abf1e776ea726de1f1459392727b6.png"
+    },
+    {
+      "key": "season_16_risen",
+      "number": 16,
+      "name": "Season of the Risen",
+      "year": 5,
+      "hash": 2809059431,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_0f47a186cf0cb88d2388d811a6ec89cb.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_0f47a186cf0cb88d2388d811a6ec89cb.png"
+    },
+    {
+      "key": "season_17_haunted",
+      "number": 17,
+      "name": "Season of the Haunted",
+      "year": 5,
+      "hash": 2809059430,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_3847a7f2241ce39588bfc2c85239b055.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_3847a7f2241ce39588bfc2c85239b055.png"
+    },
+    {
+      "key": "season_18_plunder",
+      "number": 18,
+      "name": "Season of Plunder",
+      "year": 5,
+      "hash": 2809059433,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_b358e1c398ec9f74b1f90318b0b08c21.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_b358e1c398ec9f74b1f90318b0b08c21.png"
+    },
+    {
+      "key": "season_19_seraph",
+      "number": 19,
+      "name": "Season of the Seraph",
+      "year": 5,
+      "hash": 2809059432,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_dd9fe0539a0c29c9e6f5f4d257d3c15a.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_dd9fe0539a0c29c9e6f5f4d257d3c15a.png"
+    },
+    {
+      "key": "season_20_defiance",
+      "number": 20,
+      "name": "Season of Defiance",
+      "year": 6,
+      "hash": 2758726568,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_50d80a655bccddfd26e954dbfc3b9746.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_50d80a655bccddfd26e954dbfc3b9746.png"
+    },
+    {
+      "key": "season_21_deep",
+      "number": 21,
+      "name": "Season of the Deep",
+      "year": 6,
+      "hash": 2758726569,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_f82759315a8d05fc597778d2086acee4.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_f82759315a8d05fc597778d2086acee4.png"
+    },
+    {
+      "key": "season_22_witch",
+      "number": 22,
+      "name": "Season of the Witch",
+      "year": 6,
+      "hash": 2758726570,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_fdbb36bb7f4f81c0170ca0b2cced22d6.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_fdbb36bb7f4f81c0170ca0b2cced22d6.png"
+    },
+    {
+      "key": "season_23_wish",
+      "number": 23,
+      "name": "Season of the Wish",
+      "year": 6,
+      "hash": 2758726571,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_7026238c20605a7e6842a5d799732d4b.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_7026238c20605a7e6842a5d799732d4b.png"
+    },
+    {
+      "key": "season_24_echoes",
+      "number": 24,
+      "name": "Echoes",
+      "displayName": "Episode: Echoes",
+      "year": 7,
+      "hash": 2758726572,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_191cb7a0671a82cd7eb5a7c2d5e159ba.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_191cb7a0671a82cd7eb5a7c2d5e159ba.png"
+    },
+    {
+      "key": "season_25_revenant",
+      "number": 25,
+      "name": "Revenant",
+      "displayName": "Episode: Revenant",
+      "year": 7,
+      "hash": 2758726573,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_df1a769d27453619889872819b775924.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_df1a769d27453619889872819b775924.png"
+    },
+    {
+      "key": "season_26_heresy",
+      "number": 26,
+      "name": "Heresy",
+      "displayName": "Episode: Heresy",
+      "year": 7,
+      "hash": 2758726574,
+      "icon": "/common/destiny2_content/icons/DestinySeasonDefinition_c704c59d44f0cfb7472cd09101eb8399.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/DestinySeasonDefinition_c704c59d44f0cfb7472cd09101eb8399.png"
+    },
+    {
+      "key": "season_27_edge_of_fate",
+      "number": 27,
+      "name": "The Edge of Fate",
+      "year": 8,
+      "hash": 3588958240,
+      "icon": "/common/destiny2_content/icons/1c4e4d183392430e23dfae3f77569c86.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/1c4e4d183392430e23dfae3f77569c86.png"
+    },
+    {
+      "key": "season_28_ash_and_iron",
+      "number": 28,
+      "name": "Ash & Iron",
+      "year": 8,
+      "hash": null,
+      "icon": null,
+      "iconUrl": null
+    },
+    {
+      "key": "season_29_renegades",
+      "number": 29,
+      "name": "Renegades",
+      "year": 8,
+      "hash": 1773039398,
+      "icon": "/common/destiny2_content/icons/843b1dfa55b92ccd8f8c6e9d9a0feec8.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/843b1dfa55b92ccd8f8c6e9d9a0feec8.png"
+    },
+    {
+      "key": "season_30_shadow_and_order",
+      "number": 30,
+      "name": "Shadow & Order",
+      "year": 8,
+      "hash": null,
+      "icon": null,
+      "iconUrl": null
+    },
+    {
+      "key": "season_31_shattered_cycle",
+      "number": 31,
+      "name": "Shattered Cycle",
+      "year": 9,
+      "hash": null,
+      "icon": null,
+      "iconUrl": null
+    },
+    {
+      "key": "season_3x_the_alchemist",
+      "number": null,
+      "name": "The Alchemist",
+      "year": 10,
+      "hash": null,
+      "icon": null,
+      "iconUrl": null
+    }
+  ],
+  "expansions": [
+    {
+      "key": "destiny_2",
+      "name": "Destiny 2",
+      "hash": 117774540,
+      "icon": "/common/destiny2_content/icons/1a2883beb958dd8f013cb2e2b5ea8416.jpg",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/1a2883beb958dd8f013cb2e2b5ea8416.jpg"
+    },
+    {
+      "key": "curse_of_osiris",
+      "name": "Curse of Osiris",
+      "hash": 1331476689,
+      "icon": "/common/destiny2_content/icons/dceaa9ac660f0d20996d8e5ed47b795e.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/dceaa9ac660f0d20996d8e5ed47b795e.png"
+    },
+    {
+      "key": "warmind",
+      "name": "Warmind",
+      "hash": 1331476689,
+      "icon": "/common/destiny2_content/icons/dceaa9ac660f0d20996d8e5ed47b795e.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/dceaa9ac660f0d20996d8e5ed47b795e.png"
+    },
+    {
+      "key": "forsaken",
+      "name": "Forsaken",
+      "hash": 1023088788,
+      "icon": "/common/destiny2_content/icons/f7f04331cd75ec280a0cc9ef5cecae27.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/f7f04331cd75ec280a0cc9ef5cecae27.png"
+    },
+    {
+      "key": "shadowkeep",
+      "name": "Shadowkeep",
+      "hash": 379405979,
+      "icon": "/common/destiny2_content/icons/ec0c57184df4cd071757c454fa90e32a.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/ec0c57184df4cd071757c454fa90e32a.png"
+    },
+    {
+      "key": "beyond_light",
+      "name": "Beyond Light",
+      "hash": 79180995,
+      "icon": "/common/destiny2_content/icons/43179ff6819ff51e9d12712f9c1378a7.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/43179ff6819ff51e9d12712f9c1378a7.png"
+    },
+    {
+      "key": "the_witch_queen",
+      "name": "The Witch Queen",
+      "hash": 3061040177,
+      "icon": "/common/destiny2_content/icons/105f3f6d4b17b9d007060e2ba8ffc46c.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/105f3f6d4b17b9d007060e2ba8ffc46c.png"
+    },
+    {
+      "key": "lightfall",
+      "name": "Lightfall",
+      "hash": 4186496383,
+      "icon": "/common/destiny2_content/icons/075cd129a01f66beb1882f46f18fae35.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/075cd129a01f66beb1882f46f18fae35.png"
+    },
+    {
+      "key": "the_final_shape",
+      "name": "The Final Shape",
+      "hash": 2724376914,
+      "icon": "/common/destiny2_content/icons/22d097b865f64884117ce6658e14a028.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/22d097b865f64884117ce6658e14a028.png"
+    },
+    {
+      "key": "the_edge_of_fate",
+      "name": "The Edge of Fate",
+      "hash": 3588958240,
+      "icon": "/common/destiny2_content/icons/1c4e4d183392430e23dfae3f77569c86.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/1c4e4d183392430e23dfae3f77569c86.png"
+    },
+    {
+      "key": "renegades",
+      "name": "Renegades",
+      "hash": 1773039398,
+      "icon": "/common/destiny2_content/icons/843b1dfa55b92ccd8f8c6e9d9a0feec8.png",
+      "iconUrl": "https://www.bungie.net/common/destiny2_content/icons/843b1dfa55b92ccd8f8c6e9d9a0feec8.png"
+    }
+  ]
+}

@@ -1,886 +1,569 @@
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import {
-  startTransition,
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react'
-import './App.css'
-import { ARTIFACTS } from './data/artifacts'
+  Circle,
+  Flame,
+  Leaf,
+  Orbit,
+  RotateCcw,
+  Snowflake,
+  Sparkles,
+  X,
+  Zap,
+} from 'lucide-react'
+import { DestinyIcon } from './components/DestinyIcon'
 import {
-  CHAMPION_TAGS,
-  ELEMENT_TAGS,
-  type Artifact,
-  type ArtifactMod,
-  type ChampionTag,
-  type ElementTag,
-  type WeaponTag,
-  WEAPON_TAGS,
-} from './data/types'
+  ARCHIVE_ARTIFACT_CARDS,
+  DLC_FILTER_OPTIONS,
+  ELEMENT_FILTER_OPTIONS,
+  ELEMENT_ICON_PATHS,
+  TIMELINE_SECTIONS,
+  type ArchiveArtifactCard,
+  type ArchiveRoleTag,
+} from './data/archiveUi'
+import type { ArtifactMod, ElementTag } from './data/types'
 
-type SortMode =
-  | 'newest'
-  | 'oldest'
-  | 'artifact-az'
-  | 'season-az'
+type RoleFilter = ArchiveRoleTag | 'Solo' | 'Fireteam' | 'all'
+type SortMode = 'newest' | 'oldest' | 'name'
 
-type FilterState = {
-  champion: ChampionTag | 'all'
-  element: ElementTag | 'all'
-  era: string
-  seasonId: string
-  weapon: WeaponTag | 'all'
+const PRISMATIC_ICON_URL = '/prismatic-icon.png'
+
+const ELEMENT_FALLBACK_META: Partial<Record<ElementTag, { color: string; Icon: typeof Zap }>> = {
+  Arc: { color: '#8deeff', Icon: Zap },
+  Solar: { color: '#ff873d', Icon: Flame },
+  Void: { color: '#9d72ff', Icon: Orbit },
+  Stasis: { color: '#72a8ff', Icon: Snowflake },
+  Strand: { color: '#58e66f', Icon: Leaf },
+  Prismatic: { color: '#f0a8ff', Icon: Sparkles },
+  Kinetic: { color: '#a9adbc', Icon: Circle },
 }
 
-const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric',
-})
-
-const DETAIL_HASH_PREFIX = '#artifact/'
-const LEGACY_COLUMN_THRESHOLDS = [0, 2, 5, 9, 14]
-const MODERN_COLUMN_THRESHOLDS = [0, 3, 5, 7, 10]
-const MODERN_UNLOCK_CAP = 12
-
-const elementToneMap: Record<ElementTag, string> = {
-  Solar: 'solar',
+const ELEMENT_ICON_KEYS: Partial<Record<ElementTag, string>> = {
   Arc: 'arc',
+  Solar: 'solar',
   Void: 'void',
   Stasis: 'stasis',
   Strand: 'strand',
   Prismatic: 'prismatic',
   Kinetic: 'kinetic',
-  Mixed: 'mixed',
-  Unknown: 'unknown',
 }
-
-const championToneMap: Record<ChampionTag, string> = {
-  'Anti-Barrier': 'barrier',
-  Overload: 'overload',
-  Unstoppable: 'unstoppable',
-}
-
-const weaponToneMap: Partial<Record<WeaponTag, string>> = {
-  Bow: 'weapon-bow',
-  'Pulse Rifle': 'weapon-pulse',
-  'Scout Rifle': 'weapon-scout',
-  'Auto Rifle': 'weapon-auto',
-  'Hand Cannon': 'weapon-hand-cannon',
-  'Sniper Rifle': 'weapon-sniper',
-  Sword: 'weapon-sword',
-  SMG: 'weapon-smg',
-  Sidearm: 'weapon-sidearm',
-  Shotgun: 'weapon-shotgun',
-  'Grenade Launcher': 'weapon-grenade-launcher',
-  'Linear Fusion Rifle': 'weapon-linear',
-  'Machine Gun': 'weapon-machine-gun',
-  'Fusion Rifle': 'weapon-fusion',
-  Glaive: 'weapon-glaive',
-  'Trace Rifle': 'weapon-trace',
-  'Rocket Launcher': 'weapon-rocket',
-}
-
-const seasonOptions = ARTIFACTS.map((artifact) => ({
-  id: artifact.id,
-  label: getSeasonLabel(artifact),
-}))
-
-const eraOptions = Array.from(new Set(ARTIFACTS.map((artifact) => artifact.expansionEra)))
 
 function App() {
-  const [query, setQuery] = useState('')
-  const deferredQuery = useDeferredValue(query)
+  const [selectedDlc, setSelectedDlc] = useState('all')
+  const [selectedElement, setSelectedElement] = useState('all')
+  const [selectedRole, setSelectedRole] = useState<RoleFilter>('all')
   const [sortMode, setSortMode] = useState<SortMode>('newest')
-  const [filters, setFilters] = useState<FilterState>({
-    seasonId: 'all',
-    era: 'all',
-    element: 'all',
-    weapon: 'all',
-    champion: 'all',
-  })
-  const [selectedArtifactId, setSelectedArtifactId] = useState<string | null>(() => readHashArtifactId())
-  const [selectedModKey, setSelectedModKey] = useState<string | null>(() => {
-    const artifact = getArtifactById(readHashArtifactId())
-    return artifact?.mods[0] ? getModKey(artifact.mods[0]) : null
-  })
-  const [unlockPreview, setUnlockPreview] = useState(() => {
-    const artifact = getArtifactById(readHashArtifactId())
-    return artifact ? getArtifactUnlockCap(artifact) : 0
-  })
-  const [shareState, setShareState] = useState<'idle' | 'copied' | 'failed'>('idle')
+  const [selectedArtifact, setSelectedArtifact] = useState<ArchiveArtifactCard | null>(null)
 
-  function syncArtifactSelection(id: string | null) {
-    const artifact = getArtifactById(id)
-    setSelectedArtifactId(id)
-    setSelectedModKey(artifact?.mods[0] ? getModKey(artifact.mods[0]) : null)
-    setUnlockPreview(artifact ? getArtifactUnlockCap(artifact) : 0)
-    setShareState('idle')
-  }
-
-  function updateHash(id: string | null) {
-    if (id) {
-      const nextUrl = `${window.location.pathname}${window.location.search}${DETAIL_HASH_PREFIX}${id}`
-      window.history.pushState({}, '', nextUrl)
-      syncArtifactSelection(id)
-      return
-    }
-
-    const nextUrl = `${window.location.pathname}${window.location.search}`
-    window.history.pushState({}, '', nextUrl)
-    syncArtifactSelection(null)
-  }
-
-  function openArtifact(id: string) {
-    updateHash(id)
-  }
-
-  function closeArtifact() {
-    updateHash(null)
-  }
-
-  useEffect(() => {
-    const handleHashChange = () => {
-      syncArtifactSelection(readHashArtifactId())
-    }
-
-    window.addEventListener('popstate', handleHashChange)
-    window.addEventListener('hashchange', handleHashChange)
-    return () => {
-      window.removeEventListener('popstate', handleHashChange)
-      window.removeEventListener('hashchange', handleHashChange)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!selectedArtifactId) {
-      document.body.style.overflow = ''
-      document.title = 'Destiny 2 Artifact Codex'
-      return
-    }
-
-    const artifact = ARTIFACTS.find((entry) => entry.id === selectedArtifactId)
-    document.body.style.overflow = 'hidden'
-    document.title = artifact
-      ? `${artifact.artifactName} | Destiny 2 Artifact Codex`
-      : 'Destiny 2 Artifact Codex'
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        const nextUrl = `${window.location.pathname}${window.location.search}`
-        window.history.pushState({}, '', nextUrl)
-        setSelectedArtifactId(null)
+  const filteredArtifacts = useMemo(() => {
+    const matching = ARCHIVE_ARTIFACT_CARDS.filter((artifact) => {
+      if (selectedDlc !== 'all' && artifact.dlcLabel !== selectedDlc) {
+        return false
       }
-    }
 
-    window.addEventListener('keydown', handleEscape)
-    return () => {
-      document.body.style.overflow = ''
-      window.removeEventListener('keydown', handleEscape)
-    }
-  }, [selectedArtifactId])
+      if (selectedElement !== 'all' && !artifact.elementTags.includes(selectedElement as ElementTag)) {
+        return false
+      }
 
-  const filteredArtifacts = useMemo(
-    () =>
-      ARTIFACTS.filter((artifact) => matchesArtifact(artifact, deferredQuery, filters)).sort((left, right) =>
-        compareArtifacts(left, right, sortMode),
-      ),
-    [deferredQuery, filters, sortMode],
+      if (selectedRole !== 'all') {
+        if (selectedRole === 'Solo' || selectedRole === 'Fireteam') {
+          if (!artifact.dpsContexts.includes(selectedRole)) {
+            return false
+          }
+        } else if (!artifact.roleTags.includes(selectedRole)) {
+          return false
+        }
+      }
+      
+      return true
+    })
+
+    return matching.toSorted((left, right) => {
+      if (sortMode === 'name') {
+        return left.seasonLabel.localeCompare(right.seasonLabel)
+      }
+
+      const leftSeason = left.seasonNumber ?? 0
+      const rightSeason = right.seasonNumber ?? 0
+      return sortMode === 'oldest' ? leftSeason - rightSeason : rightSeason - leftSeason
+    })
+  }, [selectedDlc, selectedElement, selectedRole, sortMode])
+
+  const roleCounts = useMemo(
+    () => ({
+      Support: ARCHIVE_ARTIFACT_CARDS.filter((artifact) => artifact.roleTags.includes('Support')).length,
+      DPS: ARCHIVE_ARTIFACT_CARDS.filter((artifact) => artifact.roleTags.includes('DPS')).length,
+      Solo: ARCHIVE_ARTIFACT_CARDS.filter((artifact) => artifact.dpsContexts.includes('Solo')).length,
+      Fireteam: ARCHIVE_ARTIFACT_CARDS.filter((artifact) => artifact.dpsContexts.includes('Fireteam')).length,
+    }),
+    [],
   )
 
-  const selectedArtifact = useMemo(
-    () => (selectedArtifactId ? getArtifactById(selectedArtifactId) : null),
-    [selectedArtifactId],
+  const timelineSeasonCount = useMemo(
+    () => TIMELINE_SECTIONS.reduce((count, section) => count + section.relatedSeasons.length, 0),
+    [],
   )
 
-  const selectedMod = selectedArtifact && selectedModKey
-    ? findModByKey(selectedArtifact.mods, selectedModKey)
-    : null
-
-  const completeArtifacts = ARTIFACTS.filter((artifact) => artifact.mods.length > 0).length
-
-  async function handleShare() {
+  useEffect(() => {
     if (!selectedArtifact) {
       return
     }
 
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-      setShareState('copied')
-    } catch {
-      setShareState('failed')
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedArtifact(null)
+      }
     }
-  }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [selectedArtifact])
 
   return (
-    <>
-      <main className="shell app-shell">
-        <header className="app-topbar">
-          <div className="app-topbar__brand">
-            <p className="eyebrow">Artifact directory</p>
-            <h1>Destiny 2 Artifact Codex</h1>
-            <p className="subtitle">
-              Recovered seasonal grids with in-game-style inspection, sourced links, and local icon assets.
-            </p>
-          </div>
-
-          <div className="app-topbar__stats" aria-label="Catalog summary">
-            <div>
-              <span>{ARTIFACTS.length}</span>
-              <small>Artifacts</small>
-            </div>
-            <div>
-              <span>{completeArtifacts}</span>
-              <small>Recovered grids</small>
-            </div>
-            <div>
-              <span>{ARTIFACTS.filter((artifact) => artifact.confidence === 'high').length}</span>
-              <small>High confidence</small>
-            </div>
-          </div>
-        </header>
-
-        <div className="app-layout">
-          <aside className="filters-sidebar">
-            <section className="controls-panel" aria-label="Search and filter artifacts">
-              <div className="search-field">
-                <label htmlFor="artifact-search">Search</label>
-                <input
-                  id="artifact-search"
-                  type="search"
-                  placeholder="Search artifacts, mods, perks, weapons, or elements"
-                  value={query}
-                  onChange={(event) => {
-                    const nextValue = event.target.value
-                    startTransition(() => setQuery(nextValue))
-                  }}
-                />
-              </div>
-
-              <div className="filter-grid filter-grid--stacked">
-                <FilterSelect
-                  id="season-filter"
-                  label="Season / Episode"
-                  value={filters.seasonId}
-                  onChange={(value) => setFilters((current) => ({ ...current, seasonId: value }))}
-                  options={[
-                    { value: 'all', label: 'All seasons / episodes' },
-                    ...seasonOptions.map((option) => ({ value: option.id, label: option.label })),
-                  ]}
-                />
-                <FilterSelect
-                  id="era-filter"
-                  label="Year / expansion era"
-                  value={filters.era}
-                  onChange={(value) => setFilters((current) => ({ ...current, era: value }))}
-                  options={[
-                    { value: 'all', label: 'All eras' },
-                    ...eraOptions.map((era) => ({ value: era, label: era })),
-                  ]}
-                />
-                <FilterSelect
-                  id="element-filter"
-                  label="Element focus"
-                  value={filters.element}
-                  onChange={(value) =>
-                    setFilters((current) => ({
-                      ...current,
-                      element: value as ElementTag | 'all',
-                    }))
-                  }
-                  options={[
-                    { value: 'all', label: 'Any element focus' },
-                    ...ELEMENT_TAGS.map((element) => ({ value: element, label: element })),
-                  ]}
-                />
-                <FilterSelect
-                  id="weapon-filter"
-                  label="Weapon focus"
-                  value={filters.weapon}
-                  onChange={(value) =>
-                    setFilters((current) => ({
-                      ...current,
-                      weapon: value as WeaponTag | 'all',
-                    }))
-                  }
-                  options={[
-                    { value: 'all', label: 'Any weapon focus' },
-                    ...WEAPON_TAGS.map((weapon) => ({ value: weapon, label: weapon })),
-                  ]}
-                />
-                <FilterSelect
-                  id="champion-filter"
-                  label="Champion focus"
-                  value={filters.champion}
-                  onChange={(value) =>
-                    setFilters((current) => ({
-                      ...current,
-                      champion: value as ChampionTag | 'all',
-                    }))
-                  }
-                  options={[
-                    { value: 'all', label: 'Any champion focus' },
-                    ...CHAMPION_TAGS.map((champion) => ({
-                      value: champion,
-                      label: champion,
-                    })),
-                  ]}
-                />
-                <FilterSelect
-                  id="sort-filter"
-                  label="Sort"
-                  value={sortMode}
-                  onChange={(value) => setSortMode(value as SortMode)}
-                  options={[
-                    { value: 'newest', label: 'Newest first' },
-                    { value: 'oldest', label: 'Oldest first' },
-                    { value: 'artifact-az', label: 'Alphabetical by artifact' },
-                    { value: 'season-az', label: 'Alphabetical by season' },
-                  ]}
-                />
-              </div>
-
-              <div className="filters-sidebar__note">
-                <p className="section-label">Recovery status</p>
-                <p>
-                  The directory now uses recovered artifact grids instead of placeholder unknown focus tags.
-                </p>
-              </div>
-            </section>
-          </aside>
-
-          <section className="results-panel catalog-panel" aria-live="polite">
-            <div className="results-header">
-              <div>
-                <p className="section-label">Catalog</p>
-                <h2>{filteredArtifacts.length} matching artifacts</h2>
-              </div>
-              <p className="section-note">
-                App shell direction is based on established dashboard template patterns, then tuned to the Destiny artifact workflow.
-              </p>
-            </div>
-
-            {filteredArtifacts.length === 0 ? (
-              <div className="empty-state">
-                <h3>No artifacts matched this filter set.</h3>
-                <p>Reset one or more filters, or search by a broader season, weapon, or element tag.</p>
-              </div>
-            ) : (
-              <div className="artifact-grid">
-                {filteredArtifacts.map((artifact) => (
-                  <article key={artifact.id} className="artifact-card">
-                    <div className="artifact-card__media">
-                      {artifact.iconPath ? (
-                        <img
-                          src={`https://www.bungie.net${artifact.iconPath}`}
-                          alt={`${artifact.artifactName} icon`}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="artifact-card__placeholder" aria-hidden="true">
-                          <span>Artifact</span>
-                        </div>
-                      )}
-                      <span className={`status-badge ${artifact.confidence === 'high' ? 'verified' : 'recovered'}`}>
-                        {artifact.confidence === 'high' ? 'High confidence' : 'Recovered grid'}
-                      </span>
-                    </div>
-
-                    <div className="artifact-card__body">
-                      <p className="artifact-card__season">{getSeasonLabel(artifact)}</p>
-                      <h3>{artifact.artifactName}</h3>
-                      <p className="artifact-card__meta">
-                        {artifact.seasonNumber ? `Season ${artifact.seasonNumber}` : 'Season number unknown'}
-                      </p>
-                      <p className="artifact-card__dates">{formatDateRange(artifact)}</p>
-                      <p className="artifact-card__era">{artifact.expansionEra}</p>
-
-                      <ChipRow label="Element focus">
-                        {artifact.elementFocus.map((element) => (
-                          <TagChip key={element} tone={elementToneMap[element]}>
-                            {element}
-                          </TagChip>
-                        ))}
-                      </ChipRow>
-
-                      <ChipRow label="Weapon focus">
-                        {artifact.weaponFocus.map((weapon) => (
-                          <TagChip key={weapon} tone={weaponToneMap[weapon] ?? 'weapon-default'}>
-                            {weapon}
-                          </TagChip>
-                        ))}
-                      </ChipRow>
-
-                      <ChipRow label="Champion mods">
-                        {artifact.championFocus.length > 0 ? (
-                          artifact.championFocus.map((champion) => (
-                            <TagChip key={champion} tone={championToneMap[champion]}>
-                              {champion}
-                            </TagChip>
-                          ))
-                        ) : (
-                          <TagChip tone="unknown">Unconfirmed</TagChip>
-                        )}
-                      </ChipRow>
-
-                      <button
-                        type="button"
-                        className="view-button"
-                        onClick={() => openArtifact(artifact.id)}
-                      >
-                        Inspect artifact
-                      </button>
-                    </div>
-                  </article>
+    <div className="min-h-screen overflow-hidden bg-[#050611] text-[#f5f1ff]">
+      <main className="grid h-screen grid-cols-[292px_minmax(0,1fr)] gap-4 p-4">
+        <aside className="relative flex h-full flex-col overflow-hidden rounded-[20px] border border-[rgba(170,130,255,0.16)] bg-[linear-gradient(180deg,rgba(18,15,42,0.95),rgba(9,8,24,0.95))] p-5 shadow-[0_18px_48px_rgba(0,0,0,0.28)]">
+          <div className="pointer-events-none absolute inset-0" style={panelTextureStyle(0.16)} />
+          <div className="relative flex h-full flex-col gap-6">
+            <SidebarSection title="DLC / EXPANSION">
+              <div className="space-y-1.5">
+                <SidebarRow label="All Artifacts" value={ARCHIVE_ARTIFACT_CARDS.length} active={selectedDlc === 'all'} onClick={() => setSelectedDlc('all')} />
+                {DLC_FILTER_OPTIONS.map((item) => (
+                  <SidebarRow key={item.label} label={item.label} value={item.count} active={selectedDlc === item.label} onClick={() => setSelectedDlc(item.label)} />
                 ))}
               </div>
-            )}
+            </SidebarSection>
+
+              <SidebarSection title="ELEMENT">
+              <div className="space-y-1.5">
+                <SidebarRow label="All Elements" value={ELEMENT_FILTER_OPTIONS.length} active={selectedElement === 'all'} onClick={() => setSelectedElement('all')} />
+                {ELEMENT_FILTER_OPTIONS.map((item) => (
+                  <SidebarRow
+                    key={item.label}
+                    label={item.label}
+                    value={item.count}
+                    active={selectedElement === item.label}
+                    onClick={() => setSelectedElement(item.label)}
+                    iconNode={renderElementIcon(item.label, 'h-4 w-4')}
+                    iconPath={ELEMENT_ICON_PATHS[item.label]}
+                    color={ELEMENT_FALLBACK_META[item.label]?.color}
+                    fallbackIcon={ELEMENT_FALLBACK_META[item.label]?.Icon}
+                  />
+                ))}
+              </div>
+            </SidebarSection>
+
+            <SidebarSection title="ROLE">
+              <div className="space-y-1.5">
+                <SidebarRow label="Support" value={roleCounts.Support} active={selectedRole === 'Support'} onClick={() => setSelectedRole('Support')} color="#9b6cff" dotOnly />
+                <SidebarRow label="DPS" value={roleCounts.DPS} active={selectedRole === 'DPS'} onClick={() => setSelectedRole('DPS')} color="#ff5f8c" dotOnly />
+                <SidebarRow label="Solo" value={roleCounts.Solo} active={selectedRole === 'Solo'} onClick={() => setSelectedRole('Solo')} color="#72a8ff" dotOnly />
+                <SidebarRow label="Fireteam" value={roleCounts.Fireteam} active={selectedRole === 'Fireteam'} onClick={() => setSelectedRole('Fireteam')} color="#62f2d1" dotOnly />
+              </div>
+            </SidebarSection>
+
+            <button
+              onClick={() => {
+                setSelectedDlc('all')
+                setSelectedElement('all')
+                setSelectedRole('all')
+                setSortMode('newest')
+              }}
+              className="mt-auto flex h-11 items-center justify-center gap-2 rounded-[14px] border border-[rgba(168,124,255,0.18)] bg-[rgba(11,10,28,0.56)] text-[14px] text-[rgba(230,220,255,0.86)] transition hover:border-[rgba(197,156,255,0.34)] hover:bg-[rgba(95,54,180,0.16)]"
+            >
+              <RotateCcw className="h-4 w-4 text-[#c59cff]" strokeWidth={1.8} />
+              Reset Filters
+            </button>
+          </div>
+        </aside>
+
+        <section className="grid min-h-0 grid-rows-[52px_minmax(0,1fr)] gap-3">
+          <section className="flex items-stretch justify-between overflow-hidden rounded-[16px] border border-[rgba(168,124,255,0.18)] bg-[rgba(11,10,28,0.72)] backdrop-blur-xl">
+            <div className="grid grid-cols-5">
+              <StatCell value={ARCHIVE_ARTIFACT_CARDS.length} label="Artifacts" />
+              <StatCell value={TIMELINE_SECTIONS.length} label="Expansions" />
+              <StatCell value={timelineSeasonCount} label="Seasons" />
+              <StatCell value={ELEMENT_FILTER_OPTIONS.length} label="Elements" />
+              <StatCell value={4} label="Roles" />
+            </div>
+
+            <div className="flex items-center gap-2 px-3">
+              <select
+                value={sortMode}
+                onChange={(event) => setSortMode(event.target.value as SortMode)}
+                className="h-9 rounded-[12px] border border-[rgba(168,124,255,0.18)] bg-[rgba(13,11,29,0.82)] px-3.5 text-[13px] text-[rgba(230,220,255,0.82)] outline-none"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name">Name</option>
+              </select>
+            </div>
           </section>
-        </div>
+
+          <section className="archive-scroll min-h-0 overflow-auto pr-1">
+            <div className="grid grid-cols-3 gap-3 pb-6">
+              {filteredArtifacts.map((artifact) => (
+                <ArtifactCard key={artifact.id} artifact={artifact} active={selectedArtifact?.id === artifact.id} onOpen={() => setSelectedArtifact(artifact)} />
+              ))}
+            </div>
+          </section>
+        </section>
       </main>
 
-      {selectedArtifact ? (
-        <div className="modal-backdrop inspector-backdrop" onClick={closeArtifact}>
-          <section
-            className="artifact-inspector"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="artifact-detail-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <header className="artifact-inspector__header">
-              <div className="artifact-inspector__title-group">
-                <div className="artifact-inspector__icon-frame">
-                  {selectedArtifact.iconPath ? (
-                    <img
-                      src={`https://www.bungie.net${selectedArtifact.iconPath}`}
-                      alt={`${selectedArtifact.artifactName} icon`}
-                    />
-                  ) : (
-                    <div className="artifact-inspector__icon-fallback" aria-hidden="true">
-                      Artifact
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <p className="artifact-inspector__eyebrow">{getSeasonLabel(selectedArtifact)}</p>
-                  <h2 id="artifact-detail-title">{selectedArtifact.artifactName}</h2>
-                  <p className="artifact-inspector__subhead">
-                    Artifact | {selectedArtifact.expansionEra} | {formatDateRange(selectedArtifact)}
-                  </p>
-                </div>
-              </div>
-
-              <div className="artifact-inspector__actions">
-                <button type="button" className="share-button" onClick={handleShare}>
-                  {shareState === 'copied'
-                    ? 'Copied link'
-                    : shareState === 'failed'
-                      ? 'Copy failed'
-                      : 'Copy URL'}
-                </button>
-                <button type="button" className="close-button" onClick={closeArtifact} aria-label="Close artifact details">
-                  Close
-                </button>
-              </div>
-            </header>
-
-            {selectedArtifact.mods.length === 0 ? (
-              <div className="artifact-inspector__empty">
-                <div className="detail-empty">
-                  <h3>Needs mod data</h3>
-                  <p>{selectedArtifact.notes}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="artifact-inspector__body">
-                <section className="artifact-board-panel">
-                  <div className="artifact-board-panel__top">
-                    <div className="artifact-board-panel__availability">
-                      <p>Acquired</p>
-                      <strong>{unlockPreview}</strong>
-                    </div>
-                    <div className="artifact-board-panel__slider">
-                      <label htmlFor="unlock-preview">Unlock preview</label>
-                      <input
-                        id="unlock-preview"
-                        type="range"
-                        min={0}
-                        max={getArtifactUnlockCap(selectedArtifact)}
-                        value={unlockPreview}
-                        onChange={(event) => setUnlockPreview(Number(event.target.value))}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="artifact-board-shell">
-                    <div className="artifact-board">
-                      {buildInspectorColumns(selectedArtifact.mods).map((column, columnIndex) => (
-                        <div key={`${selectedArtifact.id}-column-${columnIndex + 1}`} className="artifact-board__column">
-                          {column.map((mod, rowIndex) => {
-                            if (!mod) {
-                              return <div key={`${selectedArtifact.id}-empty-${columnIndex + 1}-${rowIndex + 1}`} className="artifact-tile artifact-tile--ghost" aria-hidden="true" />
-                            }
-
-                            const modKey = getModKey(mod)
-                            const active = selectedModKey === modKey
-                            const unlocked = isModUnlocked(selectedArtifact, mod, unlockPreview)
-
-                            return (
-                              <button
-                                key={modKey}
-                                type="button"
-                                className="artifact-tile"
-                                data-active={active}
-                                data-locked={!unlocked}
-                                onMouseEnter={() => setSelectedModKey(modKey)}
-                                onFocus={() => setSelectedModKey(modKey)}
-                                onClick={() => setSelectedModKey(modKey)}
-                                aria-pressed={active}
-                              >
-                                {mod.iconPath ? (
-                                  <img src={mod.iconPath} alt="" loading="lazy" />
-                                ) : (
-                                  <span className="artifact-tile__fallback" aria-hidden="true">
-                                    {getModInitials(mod.name)}
-                                  </span>
-                                )}
-                                {mod.cost !== null ? (
-                                  <span className="artifact-tile__cost">{mod.cost}</span>
-                                ) : null}
-                              </button>
-                            )
-                          })}
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="artifact-board__thresholds" aria-hidden="true">
-                      {getArtifactTierThresholds(selectedArtifact).map((threshold, index) => (
-                        <div key={`${selectedArtifact.id}-threshold-${index + 1}`} className="artifact-board__threshold">
-                          <span>{threshold}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-
-                <aside className="artifact-detail-panel">
-                  {selectedMod ? (
-                    <ArtifactDetailCard
-                      artifact={selectedArtifact}
-                      mod={selectedMod}
-                      unlocked={isModUnlocked(selectedArtifact, selectedMod, unlockPreview)}
-                    />
-                  ) : null}
-
-                  <section className="artifact-detail-panel__meta">
-                    <div>
-                      <p className="detail-label">Confidence</p>
-                      <p>{selectedArtifact.confidence}</p>
-                    </div>
-                    <div>
-                      <p className="detail-label">Notes</p>
-                      <p>{selectedArtifact.notes}</p>
-                      {selectedArtifact.releaseDateNote ? (
-                        <p className="detail-footnote">{selectedArtifact.releaseDateNote}</p>
-                      ) : null}
-                    </div>
-                    <div>
-                      <p className="detail-label">Sources</p>
-                      <ul className="source-list">
-                        {selectedArtifact.sources.map((source) => (
-                          <li key={`${selectedArtifact.id}-${source.url}`}>
-                            <a href={source.url} target="_blank" rel="noreferrer">
-                              {source.label}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </section>
-                </aside>
-              </div>
-            )}
-          </section>
-        </div>
-      ) : null}
-    </>
+      {selectedArtifact ? <ArtifactModal artifact={selectedArtifact} onClose={() => setSelectedArtifact(null)} /> : null}
+    </div>
   )
 }
 
-function ArtifactDetailCard({
+function ArtifactCard({
   artifact,
-  mod,
-  unlocked,
+  active,
+  onOpen,
 }: {
-  artifact: Artifact
-  mod: ArtifactMod
-  unlocked: boolean
+  artifact: ArchiveArtifactCard
+  active: boolean
+  onOpen: () => void
 }) {
-  const requirement = getArtifactUnlockRequirement(artifact, mod)
-  const requirementLabel =
-    requirement === 0
-      ? 'Available by default'
-      : `Must acquire ${requirement} artifact ${usesLegacyArtifactUnlocks(artifact) ? 'mods' : 'perks'}`
-
-  const detailTags = [
-    ...mod.tags.elements.map((element) => ({ tone: elementToneMap[element], value: element })),
-    ...mod.tags.weapons.map((weapon) => ({
-      tone: weaponToneMap[weapon] ?? 'weapon-default',
-      value: weapon,
-    })),
-    ...mod.tags.champions.map((champion) => ({
-      tone: championToneMap[champion],
-      value: champion,
-    })),
-    ...mod.tags.mechanics.slice(0, 6).map((mechanic) => ({ tone: 'mechanic', value: mechanic })),
-  ]
+  const roleChips = [...artifact.roleTags, ...artifact.dpsContexts]
 
   return (
-    <section className="artifact-detail-card" data-locked={!unlocked}>
-      <div className="artifact-detail-card__header">
-        <p className="artifact-detail-card__type">{mod.type ?? 'Artifact Perk'}</p>
-        <h3>{mod.name}</h3>
-      </div>
-
-      <div className="artifact-detail-card__requirement" data-locked={!unlocked}>
-        {requirementLabel}
-      </div>
-
-      {mod.cost !== null ? (
-        <div className="artifact-detail-card__cost">
-          <span>{mod.cost}</span>
-          <small>Energy cost</small>
+    <button
+      type="button"
+      onClick={onOpen}
+      className={`group relative flex min-h-[228px] flex-col overflow-hidden rounded-[18px] border bg-[rgba(9,8,24,0.92)] text-left shadow-[0_18px_50px_rgba(0,0,0,0.24)] transition duration-200 hover:-translate-y-1 hover:border-[rgba(196,150,255,0.42)] hover:shadow-[0_22px_70px_rgba(102,62,255,0.16)] ${
+        active ? 'border-[rgba(197,156,255,0.44)] shadow-[0_0_0_1px_rgba(197,156,255,0.16),0_22px_70px_rgba(102,62,255,0.18)]' : 'border-[rgba(170,130,255,0.18)]'
+      }`}
+    >
+      <div className="relative h-[110px] shrink-0" style={cardCoverStyle(artifact)}>
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,5,14,0.02)_0%,rgba(5,5,14,0.08)_42%,rgba(5,5,14,0.58)_100%)]" />
+        <div className="absolute left-4 top-4 h-11 w-11 overflow-hidden rounded-[12px] border border-[rgba(197,156,255,0.32)] bg-[linear-gradient(180deg,rgba(111,73,187,0.94),rgba(50,29,92,0.98))] p-1 shadow-[0_10px_30px_rgba(0,0,0,0.22)]">
+          {artifact.artifactIconPath ? <img src={artifact.artifactIconPath} alt="" className="h-full w-full object-cover" /> : null}
         </div>
-      ) : null}
-
-      <p className="artifact-detail-card__description">{cleanDescription(mod.description)}</p>
-
-      {detailTags.length > 0 ? (
-        <div className="artifact-detail-card__tags">
-          {detailTags.map((tag) => (
-            <TagChip key={`${mod.name}-${tag.value}`} tone={tag.tone}>
-              {tag.value}
-            </TagChip>
+        <div className="absolute right-4 top-4 flex items-center gap-2">
+          {artifact.elementTags.slice(0, 3).map((element) => (
+            <ElementBadge key={element} element={element} />
           ))}
         </div>
-      ) : null}
+      </div>
 
-      <p className="artifact-detail-card__source">{mod.source}</p>
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-3">
+        <span className="inline-flex w-fit items-center rounded-full border border-[rgba(180,140,255,0.24)] bg-[rgba(145,95,255,0.08)] px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-[rgba(240,232,255,0.82)]">
+          {artifact.dlcLabel}
+        </span>
+        <h2 className="mt-3 text-[17px] uppercase tracking-[0.08em] text-[#f5f1ff]" style={{ fontFamily: 'var(--font-display)' }}>
+          {artifact.seasonLabel}
+        </h2>
+        <p className="mt-2 min-h-[54px] text-[13px] leading-[1.35] text-[rgba(230,220,255,0.66)]">{artifact.summary}</p>
+
+        <div className="mt-3 text-[10px] uppercase tracking-[0.2em] text-[rgba(230,220,255,0.42)]">Key Perks</div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {artifact.keyPerks.slice(0, 3).map((perk) => (
+            <span key={perk} className="rounded-full border border-[rgba(180,140,255,0.24)] bg-[rgba(145,95,255,0.08)] px-2.5 py-1 text-[11px] text-[rgba(240,232,255,0.82)]">
+              {perk}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-auto flex items-end justify-between gap-4 pt-4">
+          <div className="flex flex-wrap gap-2">
+            {roleChips.map((role) => {
+              const isTeal = role === 'Solo' || role === 'Fireteam'
+              return (
+                <span
+                  key={role}
+                  className="rounded-full border px-2.5 py-1 text-[11px] uppercase"
+                  style={{
+                    borderColor: isTeal ? 'rgba(98,242,209,0.32)' : 'rgba(180,140,255,0.24)',
+                    color: isTeal ? '#9ef7e3' : 'rgba(240,232,255,0.82)',
+                    background: isTeal ? 'rgba(31,124,115,0.08)' : 'rgba(145,95,255,0.08)',
+                  }}
+                >
+                  {role}
+                </span>
+              )
+            })}
+          </div>
+          <span className="shrink-0 text-[13px] text-[rgba(230,220,255,0.72)]">{artifact.perkCount} perks</span>
+        </div>
+      </div>
+    </button>
+  )
+}
+
+function ArtifactModal({
+  artifact,
+  onClose,
+}: {
+  artifact: ArchiveArtifactCard
+  onClose: () => void
+}) {
+  const mods = artifact.sourceArtifact.mods.toSorted((left, right) => {
+    if (left.column !== right.column) {
+      return left.column - right.column
+    }
+    return left.row - right.row
+  })
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-[rgba(4,4,10,0.78)] p-6 backdrop-blur-md" onClick={onClose}>
+      <div className="grid h-[min(86vh,900px)] w-[min(1180px,100%)] grid-cols-[320px_minmax(0,1fr)] overflow-hidden rounded-[22px] border border-[rgba(184,136,255,0.28)] bg-[rgba(10,9,24,0.96)] shadow-[0_30px_100px_rgba(0,0,0,0.45)]" onClick={(event) => event.stopPropagation()}>
+        <aside className="flex flex-col border-r border-[rgba(168,124,255,0.14)] bg-[linear-gradient(180deg,rgba(17,14,35,0.96),rgba(10,9,24,0.98))] p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="h-14 w-14 overflow-hidden rounded-[14px] border border-[rgba(197,156,255,0.28)] bg-[rgba(25,15,51,0.92)] p-1.5">
+                {artifact.artifactIconPath ? <img src={artifact.artifactIconPath} alt="" className="h-full w-full object-cover" /> : null}
+              </div>
+              <div>
+                <p className="m-0 text-[11px] uppercase tracking-[0.22em] text-[rgba(230,220,255,0.42)]">{artifact.dlcLabel}</p>
+                <h2 className="mt-1 text-[30px] uppercase tracking-[0.05em] text-[#f5f1ff]" style={{ fontFamily: 'var(--font-display)' }}>
+                  {artifact.seasonLabel}
+                </h2>
+              </div>
+            </div>
+            <button onClick={onClose} className="grid h-10 w-10 place-items-center rounded-[12px] border border-[rgba(168,124,255,0.18)] bg-[rgba(13,11,29,0.82)] text-[rgba(230,220,255,0.72)] transition hover:text-[#f5f1ff]">
+              <X className="h-4 w-4" strokeWidth={1.8} />
+            </button>
+          </div>
+
+          <div className="mt-6 overflow-hidden rounded-[16px] border border-[rgba(168,124,255,0.18)]">
+            <div className="h-[140px]" style={cardCoverStyle(artifact)} />
+          </div>
+
+          <p className="mt-5 text-[14px] leading-[1.5] text-[rgba(230,220,255,0.72)]">{artifact.summary}</p>
+
+          <div className="mt-5">
+            <p className="m-0 text-[11px] uppercase tracking-[0.22em] text-[rgba(230,220,255,0.42)]">Key Perks</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {artifact.keyPerks.map((perk) => (
+                <span key={perk} className="rounded-full border border-[rgba(180,140,255,0.24)] bg-[rgba(145,95,255,0.08)] px-2.5 py-1 text-[11px] text-[rgba(240,232,255,0.82)]">
+                  {perk}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-5 grid grid-cols-2 gap-3 text-[13px] text-[rgba(230,220,255,0.72)]">
+            <InfoCell label="Artifact" value={artifact.name} />
+            <InfoCell label="Perks" value={`${artifact.perkCount}`} />
+          </div>
+
+          <div className="mt-5">
+            <p className="m-0 text-[11px] uppercase tracking-[0.22em] text-[rgba(230,220,255,0.42)]">Sources</p>
+            <ul className="mt-3 space-y-2 pl-4 text-[13px] text-[rgba(230,220,255,0.72)]">
+              {artifact.sourceArtifact.sources.map((source) => (
+                <li key={source.url}>
+                  <a href={source.url} target="_blank" rel="noreferrer" className="text-[#c59cff] hover:text-[#f5f1ff]">
+                    {source.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+
+        <section className="archive-scroll overflow-auto p-6">
+          {mods.length ? (
+            <div className="grid grid-cols-5 gap-3">
+              {mods.map((mod) => (
+                <ModTile key={`${mod.column}-${mod.row}-${mod.name}`} mod={mod} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid h-full place-items-center rounded-[18px] border border-dashed border-[rgba(168,124,255,0.18)] text-center text-[rgba(230,220,255,0.58)]">
+              <div>
+                <p className="m-0 text-[12px] uppercase tracking-[0.22em]">Grid Pending</p>
+                <p className="mt-3 max-w-[28rem] text-[14px] leading-[1.5]">This artifact is in the archive, but its full perk grid is not yet captured in the current dataset.</p>
+              </div>
+            </div>
+          )}
+        </section>
+      </div>
+    </div>
+  )
+}
+
+function ModTile({ mod }: { mod: ArtifactMod }) {
+  const initials = mod.name
+    .split(/\s+/)
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 3)
+    .toUpperCase()
+
+  return (
+    <article className="overflow-hidden rounded-[16px] border border-[rgba(168,124,255,0.18)] bg-[rgba(15,13,31,0.92)]">
+      <div className="grid aspect-square place-items-center bg-[linear-gradient(180deg,rgba(23,21,48,0.92),rgba(11,10,24,0.98))]">
+        {mod.iconPath ? (
+          <img src={mod.iconPath} alt="" className="h-[78%] w-[78%] object-contain" onError={(event) => (event.currentTarget.style.display = 'none')} />
+        ) : null}
+        <span className={`text-[28px] uppercase tracking-[0.18em] text-[rgba(245,241,255,0.76)] ${mod.iconPath ? 'hidden' : ''}`}>{initials}</span>
+      </div>
+      <div className="space-y-1 border-t border-[rgba(168,124,255,0.12)] p-3">
+        <h3 className="text-[12px] uppercase tracking-[0.12em] text-[#f5f1ff]">{mod.name}</h3>
+        <p className="line-clamp-3 text-[12px] leading-[1.35] text-[rgba(230,220,255,0.64)]">{mod.description}</p>
+      </div>
+    </article>
+  )
+}
+
+function SidebarSection({
+  title,
+  children,
+}: {
+  title: string
+  children: ReactNode
+}) {
+  return (
+    <section className="space-y-3">
+      <div className="text-[11px] uppercase tracking-[0.24em] text-[#9b6cff]">{title}</div>
+      {children}
     </section>
   )
 }
 
-function FilterSelect({
-  id,
+function SidebarRow({
   label,
   value,
-  onChange,
-  options,
+  active = false,
+  onClick,
+  iconNode,
+  iconPath,
+  fallbackIcon: FallbackIcon,
+  color,
+  dotOnly = false,
 }: {
-  id: string
+  label: string
+  value: number | string
+  active?: boolean
+  onClick: () => void
+  iconNode?: ReactNode
+  iconPath?: string | null
+  fallbackIcon?: typeof Zap
+  color?: string
+  dotOnly?: boolean
+}) {
+  return (
+    <button onClick={onClick} className={`flex w-full items-center justify-between rounded-[12px] px-2 py-2 text-left transition ${active ? 'bg-[rgba(95,54,180,0.18)]' : 'hover:bg-[rgba(95,54,180,0.12)]'}`}>
+      <span className="flex items-center gap-3 text-[15px] text-[rgba(245,241,255,0.86)]">
+        {dotOnly ? (
+          <span className="h-2.5 w-2.5 rounded-full border" style={{ borderColor: `${color ?? '#9b6cff'}aa`, boxShadow: `0 0 10px ${color ?? '#9b6cff'}35` }} />
+        ) : iconNode ? (
+          iconNode
+        ) : iconPath ? (
+          <img src={iconPath} alt="" className="h-4 w-4 object-contain" />
+        ) : FallbackIcon ? (
+          <FallbackIcon className="h-4 w-4" style={{ color }} strokeWidth={1.8} />
+        ) : null}
+        {label}
+      </span>
+      <span className="text-[13px] text-[rgba(197,156,255,0.82)]">{value}</span>
+    </button>
+  )
+}
+
+function StatCell({
+  value,
+  label,
+}: {
+  value: number
+  label: string
+}) {
+  return (
+    <div className="flex min-w-[122px] items-center gap-3 border-r border-[rgba(168,124,255,0.16)] px-4">
+      <span className="text-[22px] font-medium tracking-[0.04em] text-[#e6d8ff]">{value}</span>
+      <span className="text-[12px] text-[rgba(230,220,255,0.66)]">{label}</span>
+    </div>
+  )
+}
+
+function InfoCell({
+  label,
+  value,
+}: {
   label: string
   value: string
-  onChange: (value: string) => void
-  options: Array<{ value: string; label: string }>
 }) {
   return (
-    <div className="filter-field">
-      <label htmlFor={id}>{label}</label>
-      <select id={id} value={value} onChange={(event) => onChange(event.target.value)}>
-        {options.map((option) => (
-          <option key={`${id}-${option.value}`} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+    <div className="rounded-[14px] border border-[rgba(168,124,255,0.16)] bg-[rgba(14,13,29,0.72)] p-3">
+      <p className="m-0 text-[11px] uppercase tracking-[0.22em] text-[rgba(230,220,255,0.42)]">{label}</p>
+      <p className="mt-2 text-[14px] text-[#f5f1ff]">{value}</p>
     </div>
   )
 }
 
-function ChipRow({
-  label,
-  children,
-}: {
-  label: string
-  children: ReactNode
-}) {
-  return (
-    <div className="chip-row">
-      <p>{label}</p>
-      <div>{children}</div>
-    </div>
-  )
-}
+function ElementBadge({ element }: { element: ElementTag }) {
+  const fallback = ELEMENT_FALLBACK_META[element]
+  const iconPath = ELEMENT_ICON_PATHS[element]
+  const iconKey = ELEMENT_ICON_KEYS[element]
 
-function TagChip({
-  tone,
-  children,
-}: {
-  tone: string
-  children: ReactNode
-}) {
-  return (
-    <span className="tag-chip" data-tone={tone}>
-      {children}
-    </span>
-  )
-}
-
-function getSeasonLabel(artifact: Artifact) {
-  if (artifact.episodeName) {
-    return artifact.seasonNumber
-      ? `Season ${artifact.seasonNumber} | Episode ${artifact.episodeName}`
-      : `Episode ${artifact.episodeName}`
+  if (element === 'Prismatic') {
+    return (
+      <span className="inline-flex h-[18px] w-[18px] overflow-hidden">
+        <img src={PRISMATIC_ICON_URL} alt="" className="h-full w-full scale-[1.14] object-cover drop-shadow-[0_0_10px_rgba(240,168,255,0.36)]" />
+      </span>
+    )
   }
 
-  return artifact.seasonNumber
-    ? `Season ${artifact.seasonNumber} | ${artifact.seasonName}`
-    : artifact.seasonName ?? 'Unknown season'
-}
-
-function formatDateRange(artifact: Artifact) {
-  const start = formatDateLabel(artifact.startDate)
-  const end = formatDateLabel(artifact.endDate)
-  if (!start || !end) {
-    return 'Date unavailable'
+  if (iconKey) {
+    return <DestinyIcon group="elements" iconKey={iconKey} className="h-[18px] w-[18px] object-contain drop-shadow-[0_0_10px_rgba(197,156,255,0.26)]" alt={element} />
   }
 
-  return `${start} - ${end}`
-}
-
-function formatDateLabel(value: string) {
-  const parsed = new Date(`${value}T00:00:00Z`)
-  if (Number.isNaN(parsed.getTime())) {
-    return null
+  if (iconPath) {
+    return <img src={iconPath} alt="" className="h-[18px] w-[18px] object-contain drop-shadow-[0_0_10px_rgba(197,156,255,0.26)]" />
   }
 
-  return DATE_FORMATTER.format(parsed)
-}
-
-function readHashArtifactId() {
-  const hash = window.location.hash
-  if (!hash.startsWith(DETAIL_HASH_PREFIX)) {
-    return null
+  if (fallback) {
+    const Icon = fallback.Icon
+    return <Icon className="h-[18px] w-[18px]" style={{ color: fallback.color, filter: `drop-shadow(0 0 10px ${fallback.color}55)` }} strokeWidth={2} />
   }
 
-  return hash.slice(DETAIL_HASH_PREFIX.length) || null
+  return null
 }
 
-function matchesArtifact(artifact: Artifact, query: string, filters: FilterState) {
-  const normalizedQuery = query.trim().toLowerCase()
-  const haystack = [
-    artifact.artifactName,
-    artifact.seasonName,
-    artifact.episodeName,
-    artifact.expansionEra,
-    artifact.notes,
-    artifact.mods.map((mod) => mod.name).join(' '),
-    artifact.mods.map((mod) => mod.description).join(' '),
-    artifact.elementFocus.join(' '),
-    artifact.weaponFocus.join(' '),
-    artifact.championFocus.join(' '),
-  ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
-
-  const matchesQuery = normalizedQuery.length === 0 || haystack.includes(normalizedQuery)
-  const matchesSeason = filters.seasonId === 'all' || artifact.id === filters.seasonId
-  const matchesEra = filters.era === 'all' || artifact.expansionEra === filters.era
-  const matchesElement =
-    filters.element === 'all' || artifact.elementFocus.includes(filters.element)
-  const matchesWeapon =
-    filters.weapon === 'all' || artifact.weaponFocus.includes(filters.weapon)
-  const matchesChampion =
-    filters.champion === 'all' || artifact.championFocus.includes(filters.champion)
-
-  return (
-    matchesQuery &&
-    matchesSeason &&
-    matchesEra &&
-    matchesElement &&
-    matchesWeapon &&
-    matchesChampion
-  )
-}
-
-function compareArtifacts(left: Artifact, right: Artifact, sortMode: SortMode) {
-  if (sortMode === 'newest') {
-    return right.startDate.localeCompare(left.startDate)
+function renderElementIcon(element: ElementTag, className: string) {
+  if (element === 'Prismatic') {
+    return (
+      <span className={`${className} inline-flex overflow-hidden`}>
+        <img src={PRISMATIC_ICON_URL} alt={element} className="h-full w-full scale-[1.14] object-cover" />
+      </span>
+    )
   }
 
-  if (sortMode === 'oldest') {
-    return left.startDate.localeCompare(right.startDate)
+  const iconKey = ELEMENT_ICON_KEYS[element]
+  if (iconKey) {
+    return <DestinyIcon group="elements" iconKey={iconKey} className={className} alt={element} />
   }
 
-  if (sortMode === 'artifact-az') {
-    return left.artifactName.localeCompare(right.artifactName)
+  const iconPath = ELEMENT_ICON_PATHS[element]
+  if (iconPath) {
+    return <img src={iconPath} alt={element} className={`${className} object-contain`} />
   }
 
-  return getSeasonLabel(left).localeCompare(getSeasonLabel(right))
-}
-
-function usesLegacyArtifactUnlocks(artifact: Artifact) {
-  return (artifact.seasonNumber ?? 999) < 20
-}
-
-function getArtifactTierThresholds(artifact: Artifact) {
-  return usesLegacyArtifactUnlocks(artifact) ? LEGACY_COLUMN_THRESHOLDS : MODERN_COLUMN_THRESHOLDS
-}
-
-function getArtifactUnlockRequirement(artifact: Artifact, mod: ArtifactMod) {
-  const thresholds = getArtifactTierThresholds(artifact)
-  return thresholds[mod.column - 1] ?? thresholds.at(-1) ?? 0
-}
-
-function getArtifactUnlockCap(artifact: Artifact) {
-  if (usesLegacyArtifactUnlocks(artifact)) {
-    return LEGACY_COLUMN_THRESHOLDS.at(-1) ?? artifact.mods.length
+  const fallback = ELEMENT_FALLBACK_META[element]
+  if (fallback) {
+    const Icon = fallback.Icon
+    return <Icon className={className} style={{ color: fallback.color }} strokeWidth={1.8} />
   }
 
-  return MODERN_UNLOCK_CAP
+  return null
 }
 
-function isModUnlocked(artifact: Artifact, mod: ArtifactMod, unlockPreview: number) {
-  return unlockPreview >= getArtifactUnlockRequirement(artifact, mod)
+function cardCoverStyle(artifact: ArchiveArtifactCard): CSSProperties {
+  const image = artifact.seasonCoverPath ? `url(${artifact.seasonCoverPath})` : 'linear-gradient(135deg, #1a2535, #080712)'
+  return {
+    backgroundImage: `radial-gradient(circle at 72% 18%, rgba(122, 191, 255, 0.14), transparent 28%), linear-gradient(135deg, rgba(10, 16, 30, 0.38), rgba(8, 7, 19, 0.24)), ${image}`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }
 }
 
-function buildInspectorColumns(mods: ArtifactMod[]) {
-  const maxColumn = Math.max(5, ...mods.map((mod) => mod.column))
-  const maxRow = Math.max(1, ...mods.map((mod) => mod.row))
-
-  return Array.from({ length: maxColumn }, (_, columnIndex) =>
-    Array.from({ length: maxRow }, (_, rowIndex) =>
-      mods.find((mod) => mod.column === columnIndex + 1 && mod.row === rowIndex + 1) ?? null,
-    ),
-  )
-}
-
-function getModKey(mod: ArtifactMod) {
-  return `${mod.column}-${mod.row}-${mod.name}`
-}
-
-function findModByKey(mods: ArtifactMod[], key: string) {
-  return mods.find((mod) => getModKey(mod) === key) ?? null
-}
-
-function getArtifactById(id: string | null) {
-  return id ? ARTIFACTS.find((artifact) => artifact.id === id) ?? null : null
-}
-
-function getModInitials(name: string) {
-  return name
-    .split(/\s+/)
-    .slice(0, 3)
-    .map((part) => part[0]?.toUpperCase() ?? '')
-    .join('')
-}
-
-function cleanDescription(description: string) {
-  return description.replaceAll('[Shield-Piercing]', '').replaceAll('[Disruption]', '').replaceAll('[Stagger]', '')
+function panelTextureStyle(opacity = 0.24): CSSProperties {
+  return {
+    opacity,
+    backgroundImage:
+      'linear-gradient(135deg, rgba(197,156,255,0.1) 1px, transparent 1px), linear-gradient(45deg, rgba(112,231,255,0.07) 1px, transparent 1px)',
+    backgroundSize: '54px 54px',
+    maskImage: 'radial-gradient(circle at center, black 42%, transparent 100%)',
+  }
 }
 
 export default App

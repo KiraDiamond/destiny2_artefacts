@@ -42,6 +42,35 @@ type ParsedRow = {
 
 const OUTPUT_FILE = path.resolve(process.cwd(), 'src/data/wikiArtifactOverrides.ts')
 const ICON_OUTPUT_DIR = path.resolve(process.cwd(), 'public/artifact-icons')
+const ICON_LOOKUP_OUTPUT_FILE = path.resolve(process.cwd(), 'src/data/iconLookup.ts')
+const BUNGIE_BASE_URL = 'https://www.bungie.net'
+const EXTRA_ICON_HARVEST_NAMES = [
+  'Authorized Mod: Scavenger',
+  'Crystalized Auto Loader',
+  'Defilbrillating Blast',
+  'Limiting Break',
+  'Impact, Shock, Gravity',
+  'Gravitic-Voltaic Charge',
+  'Expert Handling',
+  'Fastest Draw',
+  'Kinetic Synthesis',
+  'Reload at Range',
+  'Riposte',
+  'Power from Pain',
+  'Armorsmith',
+  'Counter Energy',
+  'Combination Argent Blade',
+  'Singularity Blade',
+  'Kinetic Rupture',
+  "Sniper's Meditation",
+  'Sword Storm Combo',
+  'Void Infestation',
+] as const
+const MANIFEST_NAME_ALIASES: Record<string, string[]> = {
+  [normalizeIconLookupKey('Authorized Mod: Scavenger')]: ['Authorized Mods: Scavenger'],
+  [normalizeIconLookupKey('Defilbrillating Blast')]: ['Defibrillating Blast'],
+  [normalizeIconLookupKey('Limiting Break')]: ['Limit Break'],
+}
 
 const ELEMENT_ORDER = ['Solar', 'Arc', 'Void', 'Stasis', 'Strand', 'Prismatic', 'Kinetic', 'Mixed', 'Unknown']
 const WEAPON_ORDER = [
@@ -213,6 +242,24 @@ const WIKI_CONFIGS: WikiConfig[] = [
     notes: 'The full perk grid is sourced from the Destiny 2 Wiki artifact page and should be periodically checked against first-party archival captures.',
   },
   {
+    id: 'episode-echoes',
+    title: 'Hunter%27s_Journal',
+    label: "Destiny 2 Wiki Hunter's Journal page",
+    url: 'https://d2.destinygamewiki.com/wiki/Hunter%27s_Journal',
+    provider: 'd2wiki',
+    confidence: 'medium',
+    notes: 'The full perk grid is sourced from the Destiny 2 Wiki artifact page and should be periodically checked against first-party archival captures.',
+  },
+  {
+    id: 'episode-revenant',
+    title: 'Slayer_Baron_Apothecary_Satchel',
+    label: 'Destiny 2 Wiki Slayer Baron Apothecary Satchel page',
+    url: 'https://d2.destinygamewiki.com/wiki/Slayer_Baron_Apothecary_Satchel',
+    provider: 'd2wiki',
+    confidence: 'medium',
+    notes: 'The full perk grid is sourced from the Destiny 2 Wiki artifact page and should be periodically checked against first-party archival captures.',
+  },
+  {
     id: 'episode-heresy',
     title: 'Tablet_of_Ruin',
     label: 'Destiny 2 Wiki Tablet of Ruin page',
@@ -237,35 +284,47 @@ await main()
 async function main() {
   await fs.mkdir(ICON_OUTPUT_DIR, { recursive: true })
   const iconCache = new Map<string, Promise<string | null>>()
+  const localIconLookup = await buildLocalIconLookup()
+  const manifestIconLookup = await buildManifestIconLookup()
 
-  const entries = await mapWithConcurrency(WIKI_CONFIGS, 6, async (config) => {
-    const raw = await fetchRaw(config)
-    const rows =
-      config.provider === 'd2wiki'
-        ? parseD2WikiRows(raw)
-        : parseDestinypediaRows(raw)
+  const entries = (
+    await mapWithConcurrency(WIKI_CONFIGS, 4, async (config) => {
+      try {
+        const raw = await fetchRaw(config)
+        const rows =
+          config.provider === 'd2wiki'
+            ? parseD2WikiRows(raw)
+            : parseDestinypediaRows(raw)
 
-    const mods = await Promise.all(rows.map((row) => buildModRecord(config, row, iconCache)))
-    return [config.id, {
-      championFocus: collectFocus(mods.flatMap((mod) => mod.tags.champions), CHAMPION_ORDER, []),
-      confidence: config.confidence,
-      elementFocus: collectFocus(
-        mods.flatMap((mod) => mod.tags.elements),
-        ELEMENT_ORDER,
-        ['Unknown'],
-      ),
-      mods,
-      notes: config.notes,
-      sources: [{ label: config.label, url: config.url }],
-      weaponFocus: collectFocus(
-        mods.flatMap((mod) => mod.tags.weapons),
-        WEAPON_ORDER,
-        ['Unknown'],
-      ),
-    }] as const
-  })
+        const mods = await Promise.all(
+          rows.map((row) => buildModRecord(config, row, iconCache, localIconLookup, manifestIconLookup)),
+        )
+        return [config.id, {
+          championFocus: collectFocus(mods.flatMap((mod) => mod.tags.champions), CHAMPION_ORDER, []),
+          confidence: config.confidence,
+          elementFocus: collectFocus(
+            mods.flatMap((mod) => mod.tags.elements),
+            ELEMENT_ORDER,
+            ['Unknown'],
+          ),
+          mods,
+          notes: config.notes,
+          sources: [{ label: config.label, url: config.url }],
+          weaponFocus: collectFocus(
+            mods.flatMap((mod) => mod.tags.weapons),
+            WEAPON_ORDER,
+            ['Unknown'],
+          ),
+        }] as const
+      } catch (error) {
+        console.warn(`Skipping ${config.id}: ${String(error)}`)
+        return null
+      }
+    })
+  ).filter(Boolean)
 
   const overrides = Object.fromEntries(entries)
+  await harvestExtraIcons(iconCache, manifestIconLookup)
 
   const fileContents = [
     "import type { Artifact } from './types'",
@@ -277,6 +336,7 @@ async function main() {
   ].join('\n')
 
   await fs.writeFile(OUTPUT_FILE, fileContents, 'utf8')
+  await writeIconLookupFile(await buildLocalIconLookup())
   console.log(`Wrote ${Object.keys(overrides).length} artifact overrides to ${OUTPUT_FILE}`)
 }
 
@@ -285,7 +345,7 @@ async function fetchRaw(config: WikiConfig) {
     config.provider === 'd2wiki'
       ? 'https://d2.destinygamewiki.com/wiki/'
       : 'https://www.destinypedia.com/'
-  const response = await fetch(`${baseUrl}${config.title}?action=raw`)
+  const response = await fetchWithRetry(`${baseUrl}${config.title}?action=raw`)
   if (!response.ok) {
     throw new Error(`Failed to fetch ${config.title}: ${response.status}`)
   }
@@ -401,9 +461,18 @@ async function buildModRecord(
   config: WikiConfig,
   row: ParsedRow,
   iconCache: Map<string, Promise<string | null>>,
+  localIconLookup: Map<string, string>,
+  manifestIconLookup: Map<string, string>,
 ): Promise<ArtifactModRecord> {
   const tags = inferTags(row.name, row.description, row.type)
-  const iconPath = row.iconFile ? await cacheIcon(row.iconFile, iconCache) : null
+  const resolvedIconFile = row.iconFile ?? await resolveIconFileFromModPage(row.name)
+  const cachedWikiIconPath = resolvedIconFile
+    ? await cacheIcon(resolvedIconFile, iconCache)
+    : null
+  const iconPath =
+    cachedWikiIconPath
+    ?? localIconLookup.get(normalizeIconLookupKey(row.name))
+    ?? await resolveManifestIconPath(row.name, iconCache, manifestIconLookup)
 
   return {
     column: row.column,
@@ -434,7 +503,7 @@ async function cacheIcon(
 
 async function downloadIcon(iconFile: string) {
   const remoteUrl = `https://d2.destinygamewiki.com/wiki/Special:FilePath/${encodeURIComponent(iconFile).replace(/%20/g, '_')}`
-  const response = await fetch(remoteUrl)
+  const response = await fetchWithRetry(remoteUrl)
   if (!response.ok) {
     return null
   }
@@ -448,6 +517,239 @@ async function downloadIcon(iconFile: string) {
 
 function sanitizeIconFileName(fileName: string) {
   return fileName.replace(/[^a-zA-Z0-9._-]/g, '_')
+}
+
+async function buildLocalIconLookup() {
+  const lookup = new Map<string, string>()
+  const entries = await fs.readdir(ICON_OUTPUT_DIR, { withFileTypes: true })
+
+  for (const entry of entries) {
+    if (!entry.isFile()) {
+      continue
+    }
+
+    const key = normalizeIconLookupKey(entry.name)
+    if (!lookup.has(key)) {
+      lookup.set(key, `/artifact-icons/${entry.name}`)
+    }
+  }
+
+  return lookup
+}
+
+async function harvestExtraIcons(
+  iconCache: Map<string, Promise<string | null>>,
+  manifestIconLookup: Map<string, string>,
+) {
+  for (const name of EXTRA_ICON_HARVEST_NAMES) {
+    const iconFile = await resolveIconFileFromModPage(name)
+    if (iconFile) {
+      await cacheIcon(iconFile, iconCache)
+      continue
+    }
+
+    await resolveManifestIconPath(name, iconCache, manifestIconLookup)
+  }
+}
+
+async function writeIconLookupFile(lookup: Map<string, string>) {
+  const sorted = Object.fromEntries(
+    Array.from(lookup.entries()).sort(([left], [right]) => left.localeCompare(right)),
+  )
+
+  const contents = [
+    'export const ICON_LOOKUP: Record<string, string> = ',
+    `${JSON.stringify(sorted, null, 2)}`,
+    '',
+  ].join('\n')
+
+  await fs.writeFile(ICON_LOOKUP_OUTPUT_FILE, contents, 'utf8')
+}
+
+async function resolveIconFileFromModPage(name: string) {
+  for (const title of buildModPageTitleVariants(name)) {
+    const response = await fetchWithRetry(
+      `https://d2.destinygamewiki.com/wiki/${encodeURIComponent(title)}?action=raw`,
+      2,
+    )
+    if (!response.ok) {
+      continue
+    }
+
+    const raw = await response.text()
+    const imageMatch = raw.match(/\|\s*Image\s*=\s*\[\[File:(.+?\.(?:png|jpg|jpeg|webp|svg))/i)
+    if (imageMatch) {
+      return imageMatch[1].trim().replace(/ /g, '_')
+    }
+  }
+
+  return null
+}
+
+async function buildManifestIconLookup() {
+  const manifestResponse = await fetchWithRetry(`${BUNGIE_BASE_URL}/Platform/Destiny2/Manifest/`)
+  if (!manifestResponse.ok) {
+    throw new Error(`Failed to fetch Bungie manifest index: ${manifestResponse.status}`)
+  }
+
+  const manifest = await manifestResponse.json() as {
+    Response?: {
+      jsonWorldComponentContentPaths?: {
+        en?: Record<string, string>
+      }
+    }
+  }
+  const perkPath = manifest.Response?.jsonWorldComponentContentPaths?.en?.DestinySandboxPerkDefinition
+  if (!perkPath) {
+    throw new Error('Bungie manifest index did not include DestinySandboxPerkDefinition.')
+  }
+
+  const perkResponse = await fetchWithRetry(`${BUNGIE_BASE_URL}${perkPath}`)
+  if (!perkResponse.ok) {
+    throw new Error(`Failed to fetch Bungie perk manifest: ${perkResponse.status}`)
+  }
+
+  const definitions = await perkResponse.json() as Record<string, {
+    displayProperties?: {
+      icon?: string
+      name?: string
+    }
+  }>
+
+  const lookup = new Map<string, string>()
+  for (const definition of Object.values(definitions)) {
+    const name = definition.displayProperties?.name?.trim()
+    const icon = definition.displayProperties?.icon?.trim()
+    if (!name || !icon) {
+      continue
+    }
+
+    const key = normalizeIconLookupKey(name)
+    if (!lookup.has(key)) {
+      lookup.set(key, icon)
+    }
+  }
+
+  return lookup
+}
+
+async function resolveManifestIconPath(
+  name: string,
+  iconCache: Map<string, Promise<string | null>>,
+  manifestIconLookup: Map<string, string>,
+) {
+  for (const candidate of getManifestLookupCandidates(name)) {
+    const remotePath = manifestIconLookup.get(candidate)
+    if (!remotePath) {
+      continue
+    }
+
+    return cacheManifestIcon(name, remotePath, iconCache)
+  }
+
+  return null
+}
+
+function cacheManifestIcon(
+  name: string,
+  remotePath: string,
+  iconCache: Map<string, Promise<string | null>>,
+) {
+  const cacheKey = `manifest:${remotePath}`
+  const existing = iconCache.get(cacheKey)
+  if (existing) {
+    return existing
+  }
+
+  const task = downloadManifestIcon(name, remotePath)
+  iconCache.set(cacheKey, task)
+  return task
+}
+
+async function downloadManifestIcon(name: string, remotePath: string) {
+  const remoteUrl = remotePath.startsWith('http') ? remotePath : `${BUNGIE_BASE_URL}${remotePath}`
+  const response = await fetchWithRetry(remoteUrl)
+  if (!response.ok) {
+    return null
+  }
+
+  const extensionMatch = remotePath.match(/\.(png|jpg|jpeg|webp|svg)(?:\?|$)/i)
+  const extension = extensionMatch?.[1] ?? 'png'
+  const outputName = sanitizeIconFileName(`${name}_icon.${extension}`)
+  const outputPath = path.join(ICON_OUTPUT_DIR, outputName)
+  const buffer = Buffer.from(await response.arrayBuffer())
+  await fs.writeFile(outputPath, buffer)
+  return `/artifact-icons/${outputName}`
+}
+
+function getManifestLookupCandidates(name: string) {
+  const normalized = normalizeIconLookupKey(name)
+  return [
+    normalized,
+    ...(MANIFEST_NAME_ALIASES[normalized] ?? []).map((alias) => normalizeIconLookupKey(alias)),
+  ]
+}
+
+function buildModPageTitleVariants(name: string) {
+  const variants = new Set<string>()
+  const base = name.replaceAll(' ', '_')
+  variants.add(base)
+  variants.add(base.replaceAll(':', ''))
+  variants.add(base.replace('Authorized_Mod:_', 'Authorized_Mods:_'))
+  variants.add(base.replace('Submachine_Gun', 'SMG'))
+  variants.add(base.replace('Breechloaded_Grenade_Launcher', 'Grenade_Launcher'))
+  variants.add(base.replace('Argent_Blade', 'Combination_Argent_Blade'))
+  variants.add(base.replace('Shieldcrush', 'Shield_Crush'))
+  variants.add(base.replace('Concussive_Reload', 'Concussive_Reloader'))
+  variants.add(base.replace('Crystalized', 'Crystallized'))
+  variants.add(base.replace('Defilbrillating', 'Defibrillating'))
+  return Array.from(variants)
+}
+
+async function fetchWithRetry(url: string, attempts = 3) {
+  let lastError: unknown
+
+  for (let index = 0; index < attempts; index += 1) {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 20000)
+
+    try {
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'user-agent': 'destiny2-artefacts-sync/1.0',
+        },
+      })
+      clearTimeout(timeout)
+
+      if ((response.status === 429 || response.status >= 500) && index < attempts - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 750 * (index + 1)))
+        continue
+      }
+
+      return response
+    } catch (error) {
+      clearTimeout(timeout)
+      lastError = error
+      await new Promise((resolve) => setTimeout(resolve, 750 * (index + 1)))
+    }
+  }
+
+  throw lastError
+}
+
+function normalizeIconLookupKey(value: string) {
+  return value
+    .replace(/\.[a-z0-9]+$/i, '')
+    .replace(/['’]/g, '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\bicon\d*\b/gi, ' ')
+    .replace(/\bseasonal\b/gi, ' ')
+    .replace(/[()]/g, ' ')
+    .replace(/[^a-z0-9 ]+/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
 }
 
 function parseWikiLink(value: string) {
