@@ -25,7 +25,8 @@ import type { ArtifactMod, ElementTag } from './data/types'
 type RoleFilter = ArchiveRoleTag | 'Solo' | 'Fireteam' | 'all'
 type SortMode = 'newest' | 'oldest' | 'name'
 
-const PRISMATIC_ICON_URL = '/prismatic-icon.png'
+const APP_BASE_URL = import.meta.env.BASE_URL
+const PRISMATIC_ICON_URL = `${APP_BASE_URL}prismatic-icon.png`
 
 const ELEMENT_FALLBACK_META: Partial<Record<ElementTag, { color: string; Icon: typeof Zap }>> = {
   Arc: { color: '#8deeff', Icon: Zap },
@@ -46,6 +47,20 @@ const ELEMENT_ICON_KEYS: Partial<Record<ElementTag, string>> = {
   Prismatic: 'prismatic',
   Kinetic: 'kinetic',
 }
+
+const MOD_ICON_FALLBACKS = new Map(
+  ARCHIVE_ARTIFACT_CARDS.flatMap((artifact) =>
+    artifact.sourceArtifact.mods
+      .filter((mod) => mod.iconPath)
+      .map((mod) => [mod.name, mod.iconPath as string] as const),
+  ),
+)
+
+const CANONICAL_MOD_ICON_PATHS = new Map<string, string>([
+  ['Anti-Barrier Scout Rifle', '/artifact-icons/Anti-Barrier_Scout_Rifle_Icon.png'],
+  ['Overload Submachine Gun', '/artifact-icons/Overload_Submachine_Gun_Icon.png'],
+  ['Anti-Barrier Sniper Rifle', '/artifact-icons/Anti-Barrier_Sniper_Rifle_Icon.png'],
+])
 
 function App() {
   const [selectedDlc, setSelectedDlc] = useState('all')
@@ -236,7 +251,7 @@ function ArtifactCard({
       <div className="relative h-[110px] shrink-0" style={cardCoverStyle(artifact)}>
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,5,14,0.02)_0%,rgba(5,5,14,0.08)_42%,rgba(5,5,14,0.58)_100%)]" />
         <div className="absolute left-4 top-4 h-11 w-11 overflow-hidden rounded-[12px] border border-[rgba(184,136,255,0.24)] bg-[linear-gradient(180deg,rgba(38,27,70,0.96),rgba(18,14,36,0.98))] p-1 shadow-[0_10px_24px_rgba(0,0,0,0.24)]">
-          {artifact.artifactIconPath ? <img src={artifact.artifactIconPath} alt="" className="h-full w-full object-cover" /> : null}
+          {artifact.artifactIconPath ? <img src={artifact.artifactIconPath} alt="" className="h-full w-full rounded-[8px] object-cover" /> : null}
         </div>
         <div className="absolute right-4 top-4 flex items-center gap-2">
           {artifact.elementTags.slice(0, 3).map((element) => (
@@ -304,15 +319,33 @@ function ArtifactModal({
   })
   const [selectedModName, setSelectedModName] = useState(mods[0]?.name ?? '')
   const selectedMod = mods.find((mod) => mod.name === selectedModName) ?? mods[0] ?? null
+  const boardColumnKeys = [...new Set(mods.map((mod) => mod.column))].sort((left, right) => left - right)
+  const boardRowKeys = [...new Set(mods.map((mod) => mod.row))].sort((left, right) => left - right)
+  const boardColumns = boardColumnKeys.length
+  const boardRows = boardRowKeys.length
+  const boardTileSize = mods.length > 25 ? 62 : 72
+  const boardColumnGap = mods.length > 25 ? 10 : 12
+  const boardRowGap = mods.length > 25 ? 8 : 10
+  const boardLaneWidth = boardTileSize + 18
+  const boardWidth = boardColumns * boardLaneWidth + (boardColumns - 1) * boardColumnGap
+  const boardColumnsData = boardColumnKeys.map((columnKey) =>
+    boardRowKeys.map((rowKey) => mods.find((mod) => mod.column === columnKey && mod.row === rowKey) ?? null),
+  )
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-[rgba(4,4,10,0.78)] p-6 backdrop-blur-md" onClick={onClose}>
-      <div className="grid h-[min(90vh,860px)] w-[min(1320px,100%)] grid-cols-[292px_minmax(0,1fr)] overflow-hidden rounded-[22px] border border-[rgba(184,136,255,0.28)] bg-[rgba(10,9,24,0.96)] shadow-[0_30px_100px_rgba(0,0,0,0.45)]" onClick={(event) => event.stopPropagation()}>
-        <aside className="flex flex-col border-r border-[rgba(168,124,255,0.14)] bg-[linear-gradient(180deg,rgba(17,14,35,0.96),rgba(10,9,24,0.98))] p-5">
+      <div
+        className="relative grid h-[min(90vh,860px)] w-[min(1320px,100%)] grid-cols-[292px_minmax(0,1fr)] overflow-hidden rounded-[22px] border border-[rgba(184,136,255,0.28)] bg-[rgba(10,9,24,0.92)] shadow-[0_30px_100px_rgba(0,0,0,0.45)]"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="pointer-events-none absolute inset-0" style={modalBackdropStyle(artifact)} />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(7,6,17,0.96)_0%,rgba(7,6,17,0.9)_24%,rgba(7,6,17,0.76)_52%,rgba(7,6,17,0.82)_100%)]" />
+
+        <aside className="relative flex flex-col border-r border-[rgba(168,124,255,0.14)] bg-[linear-gradient(180deg,rgba(17,14,35,0.9),rgba(10,9,24,0.96))] p-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="h-14 w-14 overflow-hidden rounded-[14px] border border-[rgba(184,136,255,0.24)] bg-[linear-gradient(180deg,rgba(38,27,70,0.96),rgba(18,14,36,0.98))] p-1.5 shadow-[0_10px_24px_rgba(0,0,0,0.24)]">
-                {artifact.artifactIconPath ? <img src={artifact.artifactIconPath} alt="" className="h-full w-full object-cover" /> : null}
+                {artifact.artifactIconPath ? <img src={artifact.artifactIconPath} alt="" className="h-full w-full rounded-[10px] object-cover" /> : null}
               </div>
               <div>
                 <p className="m-0 text-[11px] uppercase tracking-[0.22em] text-[rgba(230,220,255,0.42)]">{artifact.dlcLabel}</p>
@@ -362,33 +395,15 @@ function ArtifactModal({
           </div>
         </aside>
 
-        <section className="grid min-h-0 grid-rows-[156px_minmax(0,1fr)] gap-4 p-5">
+        <section className="relative grid min-h-0 grid-rows-[164px_minmax(0,1fr)] gap-4 p-5 pb-6">
           <div className="rounded-[18px] border border-[rgba(168,124,255,0.16)] bg-[linear-gradient(180deg,rgba(18,15,42,0.92),rgba(10,9,24,0.96))] p-5">
             {selectedMod ? (
-              <div className="grid h-full grid-cols-[minmax(0,1fr)_auto] gap-5">
+              <div className="grid h-full grid-cols-[minmax(0,1fr)] gap-5">
                 <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="m-0 text-[11px] uppercase tracking-[0.22em] text-[rgba(230,220,255,0.42)]">Selected Perk</p>
-                    {selectedMod.type ? (
-                      <span className="rounded-full border border-[rgba(180,140,255,0.24)] bg-[rgba(145,95,255,0.08)] px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-[rgba(240,232,255,0.82)]">
-                        {selectedMod.type}
-                      </span>
-                    ) : null}
-                    {selectedMod.cost ? (
-                      <span className="rounded-full border border-[rgba(98,242,209,0.26)] bg-[rgba(21,79,69,0.14)] px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-[#9ef7e3]">
-                        {selectedMod.cost} energy
-                      </span>
-                    ) : null}
-                  </div>
-                  <h3 className="mt-3 text-[24px] uppercase tracking-[0.07em] text-[#f5f1ff]" style={{ fontFamily: 'var(--font-display)' }}>
+                  <h3 className="text-[24px] uppercase tracking-[0.07em] text-[#f5f1ff]" style={{ fontFamily: 'var(--font-display)' }}>
                     {selectedMod.name}
                   </h3>
-                  <p className="mt-3 max-w-[62ch] text-[14px] leading-[1.6] text-[rgba(230,220,255,0.76)]">{selectedMod.description}</p>
-                </div>
-
-                <div className="flex min-w-[88px] flex-col items-center justify-center rounded-[16px] border border-[rgba(168,124,255,0.16)] bg-[rgba(13,11,29,0.74)] px-4 py-3">
-                  <p className="m-0 text-[10px] uppercase tracking-[0.2em] text-[rgba(230,220,255,0.42)]">Unlock</p>
-                  <p className="mt-3 text-[30px] text-[#f5f1ff]">{selectedMod.column + 1}</p>
+                  <p className="mt-3 text-[14px] leading-[1.6] text-[rgba(230,220,255,0.76)]">{selectedMod.description}</p>
                 </div>
               </div>
             ) : (
@@ -402,15 +417,51 @@ function ArtifactModal({
           </div>
 
           {mods.length ? (
-            <div className="grid min-h-0 grid-cols-5 grid-rows-5 gap-2.5">
-              {mods.map((mod) => (
-                <ModTile
-                  key={`${mod.column}-${mod.row}-${mod.name}`}
-                  mod={mod}
-                  active={selectedMod?.name === mod.name}
-                  onSelect={() => setSelectedModName(mod.name)}
-                />
-              ))}
+            <div className="flex min-h-0 items-center justify-center">
+              <div
+                className="flex items-end"
+                style={{
+                  width: `${boardWidth}px`,
+                  gap: `${boardColumnGap}px`,
+                }}
+              >
+                {boardColumnsData.map((columnMods, columnIndex) => (
+                  <div key={columnIndex} className="flex flex-col items-center">
+                    <div
+                      className="flex flex-col rounded-[10px] border border-[rgba(118,164,255,0.12)] bg-[linear-gradient(180deg,rgba(10,18,34,0.54),rgba(7,10,20,0.32))] px-[9px] py-[8px] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
+                      style={{
+                        width: `${boardLaneWidth}px`,
+                        gap: `${boardRowGap}px`,
+                        minHeight: `${boardRows * boardTileSize + (boardRows - 1) * boardRowGap + 16}px`,
+                      }}
+                    >
+                      {columnMods.map((mod, rowIndex) =>
+                        mod ? (
+                          <ModTile
+                            key={`${mod.column}-${mod.row}-${mod.name}`}
+                            mod={mod}
+                            active={selectedMod?.name === mod.name}
+                            onSelect={() => setSelectedModName(mod.name)}
+                            tileSize={boardTileSize}
+                          />
+                        ) : (
+                          <div
+                            key={`empty-${columnIndex}-${rowIndex}`}
+                            className="shrink-0 rounded-[8px] border border-[rgba(118,164,255,0.08)] bg-[rgba(9,14,26,0.18)]"
+                            style={{
+                              width: `${boardTileSize}px`,
+                              height: `${boardTileSize}px`,
+                            }}
+                          />
+                        ),
+                      )}
+                    </div>
+                    <div className="mt-3 flex w-full items-center gap-2 px-1">
+                      <div className="h-[5px] flex-1 rounded-full bg-[rgba(205,220,255,0.68)]" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <div className="grid h-full place-items-center rounded-[18px] border border-dashed border-[rgba(168,124,255,0.18)] text-center text-[rgba(230,220,255,0.58)]">
@@ -430,10 +481,12 @@ function ModTile({
   mod,
   active,
   onSelect,
+  tileSize,
 }: {
   mod: ArtifactMod
   active: boolean
   onSelect: () => void
+  tileSize: number
 }) {
   const initials = mod.name
     .split(/\s+/)
@@ -442,34 +495,45 @@ function ModTile({
     .slice(0, 3)
     .toUpperCase()
   const [iconFailed, setIconFailed] = useState(false)
-  const resolvedIconUrl = resolveIconUrl(mod.iconPath)
+  const resolvedIconUrl = resolveIconUrl(
+    CANONICAL_MOD_ICON_PATHS.get(mod.name) ?? mod.iconPath ?? MOD_ICON_FALLBACKS.get(mod.name) ?? null,
+  )
   const showImage = Boolean(resolvedIconUrl && !iconFailed)
 
   return (
     <button
       type="button"
       onClick={onSelect}
-      className={`group grid min-h-0 grid-rows-[1fr_auto] overflow-hidden rounded-[16px] border text-left transition ${
-        active
-          ? 'border-[rgba(112,231,255,0.54)] bg-[rgba(24,38,66,0.9)] shadow-[0_0_0_1px_rgba(112,231,255,0.18),0_16px_34px_rgba(41,109,186,0.18)]'
-          : 'border-[rgba(168,124,255,0.18)] bg-[rgba(15,13,31,0.92)] hover:border-[rgba(197,156,255,0.34)] hover:bg-[rgba(20,17,41,0.94)]'
+      className={`group grid shrink-0 place-items-center overflow-hidden rounded-[8px] text-left transition ${
+        active ? 'bg-[rgba(115,197,255,0.12)] shadow-[0_0_0_1px_rgba(112,231,255,0.34)]' : 'hover:bg-[rgba(255,255,255,0.02)]'
       }`}
+      style={{
+        width: `${tileSize}px`,
+        height: `${tileSize}px`,
+      }}
     >
-      <div className="grid min-h-0 place-items-center bg-[linear-gradient(180deg,rgba(23,21,48,0.92),rgba(11,10,24,0.98))] px-3 py-2">
-        {showImage ? (
-          <img
-            src={resolvedIconUrl ?? undefined}
-            alt=""
-            className="h-[76%] w-[76%] object-contain"
-            onError={() => setIconFailed(true)}
-          />
-        ) : (
-          <span className="text-[24px] uppercase tracking-[0.18em] text-[rgba(245,241,255,0.76)]">{initials}</span>
-        )}
-      </div>
-      <div className="border-t border-[rgba(168,124,255,0.12)] px-3 py-2">
-        <h3 className="line-clamp-2 text-[11px] uppercase tracking-[0.14em] text-[#f5f1ff]">{mod.name}</h3>
-      </div>
+      {showImage ? (
+        <img
+          src={resolvedIconUrl ?? undefined}
+          alt=""
+          className={`object-contain transition ${
+            active
+              ? 'h-[76%] w-[76%] opacity-100 [filter:brightness(1.02)_contrast(1.01)] drop-shadow-[0_0_8px_rgba(112,231,255,0.16)]'
+              : 'h-[72%] w-[72%] opacity-92 [filter:brightness(1.0)_contrast(1.0)] group-hover:opacity-100'
+          }`}
+          onError={() => setIconFailed(true)}
+        />
+      ) : (
+        <span
+          className={`uppercase tracking-[0.18em] transition ${
+            active
+              ? 'text-[18px] text-[rgba(112,231,255,0.92)] drop-shadow-[0_0_10px_rgba(112,231,255,0.16)]'
+              : 'text-[17px] text-[rgba(245,241,255,0.76)]'
+          }`}
+        >
+          {initials}
+        </span>
+      )}
     </button>
   )
 }
@@ -518,7 +582,7 @@ function SidebarRow({
         ) : iconNode ? (
           iconNode
         ) : iconPath ? (
-          <img src={iconPath} alt="" className="h-4 w-4 object-contain" />
+          <img src={resolveIconUrl(iconPath) ?? undefined} alt="" className="h-4 w-4 object-contain" />
         ) : FallbackIcon ? (
           <FallbackIcon className="h-4 w-4" style={{ color }} strokeWidth={1.8} />
         ) : null}
@@ -577,7 +641,7 @@ function ElementBadge({ element }: { element: ElementTag }) {
   }
 
   if (iconPath) {
-    return <img src={iconPath} alt="" className="h-[18px] w-[18px] object-contain drop-shadow-[0_0_10px_rgba(197,156,255,0.26)]" />
+    return <img src={resolveIconUrl(iconPath) ?? undefined} alt="" className="h-[18px] w-[18px] object-contain drop-shadow-[0_0_10px_rgba(197,156,255,0.26)]" />
   }
 
   if (fallback) {
@@ -599,6 +663,10 @@ function resolveIconUrl(iconPath?: string | null) {
 
   if (iconPath.startsWith('/common/')) {
     return `https://www.bungie.net${iconPath}`
+  }
+
+  if (iconPath.startsWith('/')) {
+    return `${APP_BASE_URL}${iconPath.slice(1)}`
   }
 
   return iconPath
@@ -638,6 +706,17 @@ function cardCoverStyle(artifact: ArchiveArtifactCard): CSSProperties {
     backgroundImage: `radial-gradient(circle at 72% 18%, rgba(122, 191, 255, 0.14), transparent 28%), linear-gradient(135deg, rgba(10, 16, 30, 0.38), rgba(8, 7, 19, 0.24)), ${image}`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+  }
+}
+
+function modalBackdropStyle(artifact: ArchiveArtifactCard): CSSProperties {
+  const image = artifact.seasonCoverPath ? `url(${artifact.seasonCoverPath})` : 'linear-gradient(135deg, #101523, #070713)'
+  return {
+    backgroundImage: `radial-gradient(circle at 74% 18%, rgba(112, 231, 255, 0.14), transparent 24%), radial-gradient(circle at 22% 8%, rgba(197, 156, 255, 0.14), transparent 18%), ${image}`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'brightness(0.58) saturate(0.94)',
+    transform: 'scale(1.03)',
   }
 }
 
